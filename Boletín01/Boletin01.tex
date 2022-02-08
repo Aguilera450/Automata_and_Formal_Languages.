@@ -120,7 +120,7 @@
   \textbf{Sufijos propios:} $\{abbab, bbab, bab, ab, b\}$.
   
   \hfill $\lhd$
-  
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%% Ejercicio 02  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item Demostrar las propiedades de concatenación de cadenas usando inducción:
   \newcommand{\localtextbulletone}{\textcolor{gray}{\raisebox{.45ex}{\rule{.6ex}{.6ex}}}}
   \renewcommand{\labelitemi}{\localtextbulletone}
@@ -128,10 +128,48 @@
     %%\renewcommand{\labelitemi}{} 
   \item Asociatividad: $(uv)w = u(vw)$.
   \item Identidad: $v\lambda = \lambda v = v$.
-  \item Lngitud: $|vw| = |v| + |w|$.
+  \item Longitud: $|vw| = |v| + |w|$.
   \end{itemize}
-  \begin{proof} Para este ejercicio analicemos 3 posibles casos:
-    
+  \renewcommand\qedsymbol{QED}
+  \begin{proof} Consideremos las definiciones recursivas de cadena
+    concatenada por la izquierda. Así, analicemos 3 posibles casos:
+    \begin{enumerate}
+    \item Asociatividad.
+    \item Identidad.
+    \item Longitud.
+      Sea $\Sigma$ un alfabeto, $\forall_{w_1, w_2} \in \Sigma^{*};$ y $a \in \Sigma:$
+      \[
+      |w_1 \cdot w_2| = |w_1| + |w_2|
+      \]
+      Para este inciso haremos inducción sobre la estructura de la
+      cadena $w_1$. Nótese que si $w_{1} = \lambda$, entonces
+      \begin{eqnarray*}
+        |w_{2} \cdot w_{2}| &=& |\lambda \cdot w_{2}|
+        \hspace*{2.3cm} \text{Recordemos que }  w_{1} = \lambda.\\
+        &=& |w_{2}|
+        \hspace*{2cm} \text{Concatenación con la cadena vac\'ia.}\\
+        &=& 0 + |w_{2}|
+        \hspace*{2cm} \text{El cero es el neutro aditivo.}\\
+        &=& |\lambda| + |w_{2}|
+        \hspace*{2.2cm} \text{Por definición: } |\lambda| = 0.\\
+        &=& |w_{1}| + |w_{2}|
+        \hspace*{2.1cm} \text{Nuevamente: } w_{1} = \lambda.
+      \end{eqnarray*}
+      Ahora, supongamos que para alguna cadena $w \in \Sigma^{*}$
+      se cumple que $|w \cdot w_{2}| = |w| + |w_{2}|$, en partícular
+      podemos suponer $w = w_{1}$, luego
+      \begin{eqnarray*}
+        |(a \cdot w_{1}) \cdot w_{2}| &=& |a \cdot (w_{1} \cdot w_{2})|
+        \hspace*{2.7cm} \text{Asociatividad en la concatenación.} \\
+        &=& 1 + |w_{1} \cdot w_{2}|
+        \hspace*{1cm} \text{Para $x$ cadena y $b$ símbolo, se tiene que } |b \cdot x| = 1 + |x|. \\
+        &=& 1 + |w_{1}| + |w_{2}|
+        \hspace*{2.6cm} \text{Uso de la hipótesis de inducción.}\\
+        &=& |a \cdot w_{1}| + |w_{2}|
+        \hspace*{0.8cm} \text{Para $x$ cadena y $b$ símbolo, se tiene que } |b \cdot x| = 1 + |x|.\\
+      \end{eqnarray*}
+      \hspace*{4.5cm} $\therefore \hspace*{0.5cm} |vw| = |v| + |w|$
+    \end{enumerate}
   \end{proof}
 \end{enumerate}
 \end{document}
