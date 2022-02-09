@@ -115,9 +115,9 @@
   
   \textbf{Sufijos:} $\{babbab, abbab, bbab, bab, ab, b, \lambda\}$.
   
-  \textbf{Prefijos propios:} $\{babba, babb, bab, ba, b\}$.
+  \textbf{Prefijos propios:} $\{babba, babb, bab, ba, b, \lambda\}$.
 
-  \textbf{Sufijos propios:} $\{abbab, bbab, bab, ab, b\}$.
+  \textbf{Sufijos propios:} $\{abbab, bbab, bab, ab, b, \lambda\}$.
   
   \hfill $\lhd$
   %%%%%%%%%%%%%%%%%%%%%%%%%%%% Ejercicio 02  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -135,16 +135,55 @@
     concatenada por la izquierda. Así, analicemos 3 posibles casos:
     \begin{enumerate}
     \item Asociatividad.
+      Sea $\Sigma$ un alfabeto, $\forall_{w_1, w_2, w_3} \in \Sigma^{*};$ y $a \in \Sigma:$
+      
+      Para este inciso haremos inducción sobre la estructura de las cadenas. Si $w_1 = \lambda$,
+      entonces
+      \begin{eqnarray*}
+        w_1 \cdot  (w_2 \cdot w_3) &=& \lambda \cdot (w_2 \cdot w_3)
+        \hspace*{2cm} \text{Sabemos que } w_1 = \lambda.\\
+        &=& (w_2 w_3)
+        \hspace{2.7cm} \text{Identidad en cadenas.}\\
+        &=& (w_2 w_3) \cdot \lambda
+        \hspace*{2.25cm} \text{Identidad en cadenas.}\\
+        &=& (w_2 \cdot w_3) \cdot \lambda
+        \hspace*{1.5cm} \text{Definición de concatenación.}
+      \end{eqnarray*}
+      \begin{center}
+        \fbox{
+          \begin{minipage}[b][1\height]%
+            [t]{0.867\textwidth}
+            Obs\'ervese que ``$\cdot$" es usado para indicar la concatenación, cuando se
+            omite podemos trabajar esa concatenación como una cadena. En adelante se omite
+            esta observación y se emplea de manera indistinta.
+        \end{minipage}}
+      \end{center}
+      Así, supongamos sin pérdida de generalidad que, para alguna cadena $w \in \Sigma^{*}$
+      se cumple que $w\cdot (w_{2} \cdot w_{3}) = (w \cdot w_{2}) \cdot w_{3}$, entonces
+      \begin{eqnarray*}
+        a \cdot \left(w \cdot (w_{2} \cdot w_{3}) \right) &=&  aw \cdot (w_{2} \cdot w_{3})
+        \hspace*{1cm} \text{Concatenación de un símbolo y una cadena.}\\
+        &=& aw \cdot w_2 w_3
+        \hspace*{2cm} \text{Resultado de concatenar $2$ cadenas.}\\
+        &=& aw w_2 w_3
+        \hspace*{2.3cm} \text{Resultado de concatenar $2$ cadenas.}\\
+        &=& aw w_2 \cdot w_3
+        \hspace*{2.1cm} \text{Concatenación respecto a un sufijo.}\\
+        &=& (a \cdot ww_2) \cdot w_3
+        \hspace*{1.55cm} \text{Concatenación respecto a un prefijo.}\\
+        &=& (a \cdot (w \cdot w_2)) \cdot w_3
+        \hspace*{1.7cm} \text{Definición de concatenación.}
+      \end{eqnarray*}
+      \hspace*{4.5cm} $\therefore \hspace*{0.5cm} (uv)w = u(vw)$
     \item Identidad.
+      Propongamos a $\lambda$ como el neutro para la concatenación de cadenas.
     \item Longitud.
       Sea $\Sigma$ un alfabeto, $\forall_{w_1, w_2} \in \Sigma^{*};$ y $a \in \Sigma:$
-      \[
-      |w_1 \cdot w_2| = |w_1| + |w_2|
-      \]
-      Para este inciso haremos inducción sobre la estructura de la
-      cadena $w_1$. Nótese que si $w_{1} = \lambda$, entonces
+            
+      Para este inciso haremos inducción sobre la estructura de las
+      cadenas. Nótese que si $w_{1} = \lambda$, entonces
       \begin{eqnarray*}
-        |w_{2} \cdot w_{2}| &=& |\lambda \cdot w_{2}|
+        |w_{1} \cdot w_{2}| &=& |\lambda \cdot w_{2}|
         \hspace*{2.3cm} \text{Recordemos que }  w_{1} = \lambda.\\
         &=& |w_{2}|
         \hspace*{2cm} \text{Concatenación con la cadena vac\'ia.}\\
@@ -155,21 +194,46 @@
         &=& |w_{1}| + |w_{2}|
         \hspace*{2.1cm} \text{Nuevamente: } w_{1} = \lambda.
       \end{eqnarray*}
-      Ahora, supongamos que para alguna cadena $w \in \Sigma^{*}$
-      se cumple que $|w \cdot w_{2}| = |w| + |w_{2}|$, en partícular
-      podemos suponer $w = w_{1}$, luego
+      Ahora, supongamos sin pérdida de generalidad que, para alguna cadena
+      $w \in \Sigma^{*}$ se cumple que $|w \cdot w_{2}| = |w| + |w_{2}|$, luego
       \begin{eqnarray*}
-        |(a \cdot w_{1}) \cdot w_{2}| &=& |a \cdot (w_{1} \cdot w_{2})|
+        |(a \cdot w) \cdot w_{2}| &=& |a \cdot (w \cdot w_{2})|
         \hspace*{2.7cm} \text{Asociatividad en la concatenación.} \\
-        &=& 1 + |w_{1} \cdot w_{2}|
-        \hspace*{1cm} \text{Para $x$ cadena y $b$ símbolo, se tiene que } |b \cdot x| = 1 + |x|. \\
-        &=& 1 + |w_{1}| + |w_{2}|
+        &=& 1 + |w \cdot w_{2}|
+        \hspace*{1cm} \text{Para $u$ cadena y $b$ símbolo, se tiene que } |b \cdot u| = 1 + |u|. \\
+        &=& 1 + |w| + |w_{2}|
         \hspace*{2.6cm} \text{Uso de la hipótesis de inducción.}\\
-        &=& |a \cdot w_{1}| + |w_{2}|
-        \hspace*{0.8cm} \text{Para $x$ cadena y $b$ símbolo, se tiene que } |b \cdot x| = 1 + |x|.\\
+        &=& |a \cdot w| + |w_{2}|
+        \hspace*{0.8cm} \text{Para $u$ cadena y $b$ símbolo, se tiene que } |b \cdot u| = 1 + |u|.\\
       \end{eqnarray*}
       \hspace*{4.5cm} $\therefore \hspace*{0.5cm} |vw| = |v| + |w|$
     \end{enumerate}
   \end{proof}
+\item Demostrar que dado un alfabeto cualquiera y para cualesquiera cadenas $u, v, w$ en
+  la cerradura, se cumplen las siguientes propiedades:
+  \begin{enumerate}
+  \item $|w| = |w|$.
+  \item $\left(w^{R}\right)^{R} = w$.
+  \item $(uv)^{R} = v^R u^R$.
+  \item Para cada $n \geq 0,\; \left(w^{n}\right)^{R} = \left(w^{n}\right)^{R}$.
+  \end{enumerate}
+\item Sea $\Sigma = \{a, b\}$, el lenguaje $L$ se define como:
+  \begin{enumerate}
+  \item[i)] $\lambda \in L$.
+  \item[ii)] Si $w_1, w_2 \in L$, entonces $aw_1bw_2$ y $bw_1aw_2$ pertenecen a $L$.
+  \item[iii)] Son todas las cadenas en $L$.
+  \end{enumerate}
+\item Suponer que $L_1 \geq \{a,b\}^{*}$ esta definido por:
+  \begin{enumerate}
+  \item[i)] $\lambda \in L_1$.
+  \item[ii)]  para cada $w \in L_1$ sucede que $wa$ y $wba$ también pertenecen a $L_1$.
+  \end{enumerate}
+  Demuestre que para cada $v \in L_1$ las siguientes afirmaciones se cumplen:
+  \begin{enumerate}
+  \item Cualquier cadena $u \in L_1$ tiene mayor o igual número de $a$'s que de
+    $b$'s $\left(\#_{a} \geq \#_{b}\right)$.
+  \item Cualquier cadena $u \in L_1$ no contiene la subcadena $bb$.
+  \end{enumerate}
+\item 
 \end{enumerate}
 \end{document}
