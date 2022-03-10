@@ -197,7 +197,7 @@
     &\delta^{*}(10) = 0 \hspace*{1.9cm} \delta^{*}(21) = 1
     \hspace*{1.8cm} \delta^{*}(102) = 2 \hspace*{1.9cm} \;\;\delta^{*}(120) = 0&
   \end{eqnarray*}
-  Ahora veamos la representación de $A_{3,2,3}$ como una gráfica de estados
+  Por último, veamos la representación de $A_{3,2,3}$ como una gráfica de estados
   \begin{center}
     \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
         final/.style={circle,draw=black,double},thick]
@@ -229,12 +229,92 @@
       \node [estado,final]   (2) [right=100pt,below=30pt] {2};
       \path[->]
       (S) edge [curve to, out=25,in=155,relative] node {a} (1)
-      (S) edge [curve to, out=-25,in=-155,relative] node [swap] {$\epsilon$} (2)
+      (S) edge [curve to, out=-25,in=-155,relative] node [swap] {$\varepsilon$} (2)
       (1) edge [curve to, out=25,in=155,relative] node {a,b} (2)
       edge [loop right] node {a,b} (1)
-      (2) edge [curve to, out=25,in=155,relative] node {$\epsilon$} (1)
+      (2) edge [curve to, out=25,in=155,relative] node {$\varepsilon$} (1)
       edge [loop below] node {a,b} (2);
     \end{tikzpicture}
   \end{center}
+  $\triangledown$ \textbf{Solución:} Sea $A_{\varepsilon} = \langle Q, \Sigma, \Delta, S, F\rangle$
+  el autómata representado por la gráfica de estados anterior, y sea $Q = \{S,1,2\}$
+  el conjunto de estados, entonces
+  \[
+  \mathcal{P}(Q) = \{\phi, \{S\}, \{1\}, \{2\}, \{S,1\}, \{S,2\}, \{1,2\}, \{S,1,2\}\}
+  \]
+  Definamos $A = \langle Q_{D}, \Sigma, \delta_{D}, s_D, F_D\rangle$ cuya gráfica de
+  estados se presenta a continuación
+  \begin{center}
+    \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
+        final/.style={circle,draw=black,double},thick]
+      \node [estado,initial] (S) [right=30pt,  below=0pt]    {$\{S\}$};
+      \node [estado]         (0) [right=0pt,   above=150pt]  {$\phi$};
+      \node [estado]         (1) [right=100pt, above=100pt]  {$\{1\}$};
+      \node [estado]        (s1) [left=150pt,  below=0pt]    {$\{S,1\}$};
+      \node [estado,final]   (2) [left=100pt,  above=100pt]  {$\{2\}$};
+      \node [estado,final]  (s2) [left=50pt,   below=0pt]    {$\{S,2\}$};
+      \node [estado,final]  (12) [right=7pt,   below=120pt]  {$\{1,2\}$};
+      \node [estado,final] (s12) [right=150pt, below=0pt]    {$\{S,1,2\}$};
+      \path[->]
+      (S) edge [curve to, out=25,in=155,relative] node {$b$} (0)
+      (S) edge [curve to, out=25,in=155,relative] node {$a$} (1)
+      (s2) edge [curve to, out=25,in=155,relative] node {$b$} (2)
+      (1) edge [curve to, out=-5,in=155,relative] node {$a, b$} (12)
+      (s1) edge [curve to, out=25,in=-155,relative] node {$a, b$} (12)
+      (S) edge [curve to, out=25,in=155,relative] node {$\varepsilon$} (2)
+      (s1) edge [curve to, out=25,in=155,relative] node {$\varepsilon$} (2)
+      (1) edge [curve to, out=25,in=-155,relative] node {$\varepsilon$} (0)
+      (2) edge [curve to, out=135,in=-295,relative] node {$\varepsilon$} (1)
+      edge [loop right] node {$a,b$} (2)
+      (12) edge [curve to, out=-45,in=-135,relative] node {$\varepsilon$} (1)
+      edge [loop below] node {a,b} (12)
+      (s2) edge [curve to, out=25,in=-155,relative] node {$a, \varepsilon$} (12)
+      (s12) edge [curve to, out=25,in=155,relative] node {$a, b, \varepsilon$} (12);
+    \end{tikzpicture}
+  \end{center}
+  Ahora, veamos las transiciones a través de la función $\delta_{D}$ [que como sabemos,
+    existe una equivalencia $\delta_{D} = \Delta^{*} = \Delta^{*}_{\varepsilon}$], así
+  \begin{center}
+    \begin{tabular}{ c  c  c }
+      $\Delta^{*}_{\varepsilon}\left(\{S\}, \varepsilon\right) = \{2\}$ & $\Delta^{*}_{\varepsilon}\left(\{S\}, a\right) = \{1\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{S\}, b\right) = \phi$\\
+      $\Delta^{*}_{\varepsilon}\left(\{1\}, \varepsilon\right) = \phi$  & $\Delta^{*}_{\varepsilon}\left(\{1\}, a\right) = \{1,2\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{1\}, b\right) = \{1,2\}$ \\
+      $\Delta^{*}_{\varepsilon}\left(\{2\}, \varepsilon\right) = \{1\}$ & $\Delta^{*}_{\varepsilon}\left(\{2\}, a\right) = \{2\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{2\}, b\right) = \{2\}$\\
+      $\Delta^{*}_{\varepsilon}\left(\{1,2\}, \varepsilon\right) = \{1\}$ & $\Delta^{*}_{\varepsilon}\left(\{1,2\}, a\right) = \{1,2\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{1,2\}, b\right) = \{1,2\}$ \\
+      $\Delta^{*}_{\varepsilon}\left(\{S,1\}, \varepsilon\right) = \{2\}$ & $\Delta^{*}_{\varepsilon}\left(\{S,1\}, a\right) = \{1,2\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{S,1\}, b\right) = \{1,2\}$ \\
+      $\Delta^{*}_{\varepsilon}\left(\{S,2\}, \varepsilon\right) = \{1,2\}$ & $\Delta^{*}_{\varepsilon}\left(\{S,2\}, a\right) = \{1,2\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{S,2\}, \varepsilon\right) = \{2\}$ \\
+      $\Delta^{*}_{\varepsilon}\left(\{S,1,2\}, \varepsilon\right) = \{1,2\}$ & $\Delta^{*}_{\varepsilon}\left(\{S,1,2\}, a\right) = \{1,2\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{S,1,2\}, \varepsilon\right) = \{1,2\}$\\
+    \end{tabular} 
+  \end{center}
+  Por último se presenta la tabla de transiciones del autómata $A$:
+  \begin{center}
+    \begin{tabular}{| c | c | c | c | c | c | c | c | c |}
+      \hline
+      $\mathbf{Q}$ & $\mathbf{\{S\}}$ & $\phi$ & $\mathbf{\{1\}}$ & final: $\mathbf{\{2\}}$ & final: $\mathbf{\{1,2\}}$ & $\mathbf{\{S,1\}}$ & final: $\mathbf{\{S,2\}}$ & final: $\mathbf{\{S, 1, 2\}}$\\ \hline
+      $\rightarrow \mathbf{\{S\}}$ & -- & b & a & $\varepsilon$ & -- & -- & -- & -- \\ \hline
+      $\phi$  & -- & -- & -- & -- & -- & --  & -- & -- \\ \hline
+      $\mathbf{\{1\}}$  & -- & $\varepsilon$ & -- & -- & $a, b$ & --  & -- & -- \\\hline
+      $\mathbf{\{2\}}$  & -- & -- & $\varepsilon$ & $a,b$ & -- & --  & -- & -- \\\hline
+      $\mathbf{\{1,2\}}$  & -- & -- & $\varepsilon$ & -- & $a,b$ & -- & -- & -- \\\hline
+      $\mathbf{\{S,1\}}$  & -- & -- & -- & $\varepsilon$ & $a,b$ & -- & -- & -- \\\hline
+      $\mathbf{\{S,2\}}$  & -- & -- & -- & $b$ & $a, \varepsilon$ & -- & -- & --  \\\hline
+      $\mathbf{\{S,1,2\}}$  & -- & -- & -- & -- & $a,b,\varepsilon$ & --  & -- & -- \\\hline
+    \end{tabular} 
+  \end{center}
+  \hfill $\lhd$
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ejercicio 03. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+\item Construye un autómata que acepte el lenguaje generado por la expresión regular siguiente
+  \[
+  (1 + 1(0^{*}1)^{*}1)^{*} + (0^{*}1^{*} + (10)^{*})
+  \]
+  $\triangledown$ \textbf{Solución:}
+  
+  \hfill $\lhd$
 \end{enumerate}
 \end{document}
