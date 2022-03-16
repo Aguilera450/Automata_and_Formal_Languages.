@@ -63,7 +63,7 @@
 \pagestyle{fancyplain}
 
 \begin{document}
-\title{UNIVERSIDAD AUT\'ONOMA DE M\'EXICO\\ Facultad de Ciencias}
+\title{UNIVERSIDAD NACIONAL AUT\'ONOMA DE M\'EXICO\\ Facultad de Ciencias}
 \author{Autor: Adri\'an Aguilera Moreno}
 \date{}
 \maketitle
@@ -98,6 +98,12 @@
   pedir que un valor sea m\'ultiplo, el estado terminal debe ser $0$.}
   de manera explícita.
   
+  Entonces $A_{k, m, p} = \langle Q, \Sigma, \delta, s, F \rangle$ tales que
+  \begin{eqnarray*}
+    Q &=& \{0, \dotsm, k - 1\} \hspace*{1.5cm} \text{Residuos al dividir entre }k.\\
+    \Sigma &=& \{0, \dotsm, p - 1\} \hspace*{1cm} \text{Los posibles valores de la notación.}\\
+    F &=& \{\text{Los $m$ (residuos) indicados}\}
+  \end{eqnarray*}
   Definimos
   \begin{eqnarray*}
     \#(\alpha d) &=& p \cdot (\#\alpha) + d\\
@@ -105,7 +111,7 @@
   \end{eqnarray*}
   donde $d\in{0,1, \dotsm, p - 1}$ es alguna transición y $q$ un estado
   en el autómata.
-
+  
   Ahora mostremos lo anterior por inducción en $\alpha$ [en la cadena $p$-aria],
   esto es
   \begin{eqnarray*}
@@ -314,7 +320,73 @@
   (1 + 1(0^{*}1)^{*}1)^{*} + (0^{*}1^{*} + (10)^{*})
   \]
   $\triangledown$ \textbf{Solución:}
+  A continuación se muestra la gráfica de transiciones del
+  autómata que acepta la expresión regular
+  \begin{center}
+    \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
+        final/.style={circle,draw=black,double},thick]
+      \node [estado,initial] (S)  [below=20pt, left=100pt]  {$S$};
+      \node [estado]         (0)  [left=60pt, above=50pt]   {$q_{1}$};
+      \node [estado]         (1)  [left=60pt, below=70pt]   {$q_{2}$};
+      \node [estado]         (2)  [left=30pt, above=80pt]   {$q_{3}$};
+      \node [estado]         (3)  [left=30pt, above=20pt]   {$q_{4}$};
+      \node [estado]         (4)  [left=20pt, below=80pt]   {$q_{5}$};
+      \node [estado]         (5)  [left=20pt, below=120pt]  {$q_{6}$};
+      \node [estado]         (6)  [right=20pt, above=80pt]  {$q_{7}$};
+      \node [estado]         (7)  [right=20pt, above=20pt]  {$q_{8}$};
+      \node [estado]         (8)  [right=40pt, below=80pt]  {$q_{9}$};
+      \node [estado]         (9)  [right=40pt, below=120pt] {$q_{10}$};
+      \node [estado]         (10) [right=55pt, above=50pt]  {$q_{11}$};
+      \node [estado]         (11) [right=100pt, below=80pt] {$q_{12}$};
+      \node [estado,final]   (12) [below=20pt, right=100pt] {$q_{13}$};
+      \node [estado]         (13)  [below=20pt, left=50pt]  {$q_{14}$};
+      \node [estado]         (14)  [below=20pt, right=50pt]  {$q_{15}$};
+      \path[->]
+      (S)  edge [curve to, out=25,in=155,relative]   node {$\varepsilon$}   (0)
+      (S)  edge [curve to, out=-25,in=-155,relative] node {$\varepsilon$}   (1)
+      %(0)  edge [curve to, out=10,in=190,relative]   node {$\varepsilon$}   (10)
+      (0)  edge [curve to, out=0,in=155,relative]    node {$\varepsilon$}   (2)
+      (3)  edge [curve to, out=0,in=-155,relative]   node {$\varepsilon$}   (0)
+      (2)  edge [curve to, out=0,in=180,relative]    node {$1$}             (6)
+      (6)  edge [curve to, out=0,in=-155,relative]   node {$\varepsilon$}   (10)
+      (7)  edge [curve to, out=0,in=180,relative]    node {$0$}             (3)
+      (10) edge [curve to, out=0,in=-155,relative]   node {$\varepsilon$}   (7)
+      (10) edge [curve to, out=0,in=155,relative]    node {$\varepsilon$}   (12)
+      (1)  edge [curve to, out=0,in=180,relative]    node {$1$}             (4)
+      (1)  edge [curve to, out=-50,in=-85,relative]  node {$\varepsilon$}   (5)
+      (11)  edge [curve to, out=10,in=185,relative]  node {$\varepsilon$}   (12)
+      (4)  edge [curve to, out=25,in=155,relative]   node {$1$}             (8)
+      edge [loop above] node {$0$} (4)
+      (8)  edge [curve to, out=25,in=155,relative]   node {$\varepsilon$}   (4)
+      (8)  edge [curve to, out=0,in=178,relative]    node {$1$}             (11)
+      (5)  edge [curve to, out=0,in=178,relative]    node {$1$}             (9)
+      (9)  edge [curve to, out=0,in=178,relative]    node {$1$}             (11)      
+      (11) edge [curve to, out=-80,in=270,relative]  node {$\varepsilon$}   (1)
+      (S)  edge [curve to, out=0,in=180,relative]    node {$\varepsilon$}   (13)
+      (13) edge [curve to, out=0,in=180,relative]    node {$\varepsilon$}   (14)
+      edge [loop above] node {$0$} (13)
+      (14) edge [curve to, out=0,in=180,relative]    node {$\varepsilon$}   (12)
+      edge [loop above] node {$1$} (14);
+    \end{tikzpicture}
+  \end{center}
+  Así, el autómata referente a la anterior gráfica de transiciones es
+  $A_{\varepsilon} = \langle Q, \Sigma, \delta, S, F\rangle$, donde
+  $Q = \{S, q_0, q_1, \dotsm, q_{14}, q_{15}\}$, $\Sigma = \{0, 1\}$,
+  $\delta =   (1 + 1(0^{*}1)^{*}1)^{*} + (0^{*}1^{*} + (10)^{*})$,
+  $S = \{S\}$ y $F = \{q_{13}\}$.
+  \hfill $\lhd$
+
+\item Da una gramática que genere el lenguaje aceptado por el autómata del ejercicio $1$.
   
+  $\triangledown$ \textbf{Solución:}
+  Sea $G_{1} = \langle \Sigma, \Gamma, S, \rightarrow_{G_1}\rangle$ la gramática que genera
+  el lenguaje aceptado por el autómata del ejercicio $1$, entonces
+  \begin{eqnarray*}
+    \Sigma &=& \{0,1, \dotsm, p-1\}\\
+    \Gamma &=& \{0, 1, \dotsm, k - 1\}/\{m\}\\
+    S      &=& \{0\}\\
+    \rightarrow_{G_{1}} &=& \{\}
+  \end{eqnarray*}
   \hfill $\lhd$
 \end{enumerate}
 \end{document}
