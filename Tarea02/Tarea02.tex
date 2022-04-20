@@ -152,20 +152,20 @@
       menos en $2$ ocasiones se pasa por algún estado $q$ en $A$ (es claro que $q$ debe ser
       estado de A). Así, para la función $\delta_{A}$ de transición en $A$, tenemos que
       \begin{eqnarray*}
-        \delta^{*}(s, a^{i}b^{m}) &=& q\\
-        \delta^{*}(q, b^{n}) &=& q\\
-        \delta^{*}(q, b^{l}c^{r}) &=& f \in \mathbb{F}_{A}.
+        \delta^{*}_{A}(s, a^{i}b^{m}) &=& q\\
+        \delta^{*}_{A}(q, b^{n}) &=& q\\
+        \delta^{*}_{A}(q, b^{l}c^{r}) &=& f \in \mathbb{F}_{A}.
       \end{eqnarray*}
       $\forall_{m,n,l} \in \mathbb{N}$. Donde $m + n + l = j$ y en particular $n \neq 0$ [$b^{n}$
         no se colapsa a $\lambda$].
       
       Como $A$ es determinista, tenemos que para todo $p \in \mathbb{N}$ se cumple que
       \[
-      \delta^{*}(q, b^{np}) = q
+      \delta^{*}_{A}(q, b^{np}) = q
       \]
       como consecuencia, directa se tiene que
       \[
-      \delta^{*}(s, a^{i}b^{m}b^{np}b^{l}c^{r}) = f \in \mathbb{F}_{A}.
+      \delta^{*}_{A}(s, a^{i}b^{m}b^{np}b^{l}c^{r}) = f \in \mathbb{F}_{A}.
       \]
       pero $m + np + l \neq j$ cuando $p \neq 1$. Por tanto $ a^{i}b^{m}b^{np}b^{l}c^{r} \in L(A)$,
       lo que implica
@@ -196,10 +196,62 @@
         es el cuadrado de un natural.}\} \text{ \textbf{NO} es regular}.
       \]
     \item \textbf{Demostración por Teorema de Myhill-Nerode.} Por refutación, supongamos que
-      
+      $L$ es regular, entonces tenemos que si
+      \begin{eqnarray*}
+        \alpha &=& (a^{i}b^{j}c^{r})^{w^2}\;\; \text{ tal que } (i + j + r)^{w^2}\;\; = x^{w^2}\; \Rightarrow \alpha \in L.\\
+        \beta &=& (a^{m}b^{n}c^{k})^{v^2} \text{ tal que } (m + n + k)^{v^2} = (y)^{v^2} \Rightarrow \beta \in L.\\
+        \varphi &=& \alpha.
+      \end{eqnarray*}
+      Donde $v \neq w$. Así,
+      \begin{eqnarray*}
+        \alpha \varphi &=& (a^{i}b^{j}c^{r})^{w^2} \cdot (a^{i}b^{j}c^{r})^{w^2}\\
+        &=& (a^{i}b^{j}c^{r})^{w^2 + w^2}
+        \hspace*{2cm} \text{Aplicando el supuesto del inicio.}\\
+        &\Rightarrow& |\alpha \varphi| = (i + j + r)^{w^2 + w^2}\\
+        & & \hspace*{0.75cm} = (i + j + r)^{2w^2}\\
+        & & \hspace*{0.75cm} = \left((i + j + r)^{w^2}\right)^{2}
+      \end{eqnarray*}
+      Luego, por el Teorema de Myhill-Nerode tenemos que
+      \begin{eqnarray*}
+      \alpha \equiv_{L} \beta &\Leftrightarrow& \forall_{n \in \mathbb{N}}\; \alpha \varphi^{n^2} \in L
+      \Leftrightarrow \beta \varphi^{n^2} \in L
+      \end{eqnarray*}
+      Ahora, verifiquemos que $\beta \varphi \in L$, \textit{i.e.},
+      \begin{eqnarray*}
+        \beta \varphi &=& (a^{m}b^{n}c^{k})^{v^2} \cdot (a^{i}b^{j}c^{r})^{w^2}\\
+        &\Rightarrow& (y)^{v^2} \cdot (x)^{w^2} 
+      \end{eqnarray*}
+      \begin{itemize}
+      \item Si $v > w$, entonces
+        \begin{eqnarray*}
+          y^{v^2 - w^2 + w^2} \cdot x^{w^2} &=& y^{v^2 - w^2} \cdot (xy)^{w^2 + w^2}\\
+          &=& y^{v^2 - w^2} \cdot \left((xy)^{w^2}\right)^2
+        \end{eqnarray*}
+        sabemos que $v^2 - w^2 = z^2$ solo para $\{v,w,z\}$ una terna pitagórica, y no es
+        cierto para cualesquiera naturales, esto contradice que $\beta \varphi \in L$, sin
+        embargo nos falta analizar otro caso.
+      \item Si $w > v$, entonces
+        \begin{eqnarray*}
+          y^{w^2 - v^2 + v^2} \cdot x^{w^2} &=& y^{w^2 - v^2} \cdot (xy)^{v^2 + w^2}
+        \end{eqnarray*}
+        como podemos observar, sucede lo mismo que en el caso anterior, pues
+        $w^2 - v^2 = z^2$ y $v^2 + w^2 = t^2$ solo se cumplen para ternas pitagóricas específicas
+        y no para cualesquiera naturales, luego llegamos a contradecir el teorema de
+        Myhill-Nerode.
+      \end{itemize}
+      \[
+      \therefore\; \{\mathbf{a} \in \{a, b, c\}^{*}\; |\; \text{la longitud de $\mathbf{a}$
+        es el cuadrado de un natural.}\} \text{ \textbf{NO} es regular}.
+      \]
     \end{itemize}
 
     En todos los casos se obvia que la demostración para $\mathbf{a} = \lambda$ [cadena vacía] es por vacuidad.
+    
+    De los analisis anteriores (tanto por Teo. del Bombeo como del Teo. de Myhill-Nerode) concluimos que
+    \[
+    \therefore\; \{\mathbf{a} \in \{a, b, c\}^{*}\; |\; \text{la longitud de $\mathbf{a}$
+      es el cuadrado de un natural.}\} \text{ \textbf{NO} es regular}.
+      \]
   \end{proof}
 \end{enumerate}
 \end{document}
