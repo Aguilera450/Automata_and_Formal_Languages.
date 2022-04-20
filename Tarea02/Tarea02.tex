@@ -1,10 +1,11 @@
 \documentclass{article}
 
 % Symbols
-\usepackage{amsfonts, amsthm}
+\usepackage[T1]{fontenc}
 \usepackage{upgreek}
 \usepackage{physics}
 \usepackage{cancel}
+\usepackage{amsfonts, amsthm}
 \usepackage{amssymb, latexsym, amsmath}
 
 %Algorithms
@@ -90,6 +91,115 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{\LARGE{Tarea 2}}
 \begin{enumerate}
-\item Dados
+\item Demuestra que el lenguaje
+  \[
+  \{\mathbf{a} \in \{a, b, c\}^{*}\; |\; \text{la longitud de $\mathbf{a}$
+    es el cuadrado de un natural.}\}
+  \]
+  no es regular. Usa tanto el teorema del bombeo como el de
+  Myhill-Nerode.
+  \begin{proof} Antes de iniciar con las demostraciones por los
+    teoremas requeridos, analicemos la estructura de las cadenas
+    generadas por
+    \[
+    L(A) = \{\mathbf{a} \in \{a, b, c\}^{*}\; |\; \text{la longitud de $\mathbf{a}$
+    es el cuadrado de un natural.}\}
+    \]
+    Suponiendo que existe el autómata $A \in DFA$ tal que reconoce el lenguaje anterior.
+    
+    Nótese que $\Sigma = \{a,b,c\}$ y $L(A) = \Sigma^{*}$, entonces $\mathbf{a}$ debe
+    ser una cadena finita y supondremos que $L(A)$ es un lenguaje ``muy grande'' pero
+    finito.
+    
+    Además, para nuestras demostraciones nos fijaremos en la longitud de las cadenas
+    generadas por nuestro lenguaje y no necesariamente en la estructura de estas
+    cadenas, entonces
+    \[
+    |abababcbacbabc| = |aaaaabbbbbbccc| = |a^{5}b^{6}c^{3}|
+    \]
+    por tanto, en las demostraciones supondré, sin pérdida de generalidad, que
+    \[
+    \mathbf{a} = a^{i}b^{j}c^{r}
+    \]
+    para $i,j,r \in \mathbb{N}$.
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          \textbf{Obs.} El que $\mathbf{a}$ tenga la estructura anterior
+          no indica que $b$ siempre debe estar en esa posición, incluso
+          podriamos precindir de $b$ o de algún término en la cadena, al
+          suponer esa estructura solo simplificamos el considerar casos (que
+          por ser un conjunto infinito o muy grande, tendriamos muchas
+          combinaciones para concatenar elementos del alfabeto).
+      \end{minipage}}
+    \end{center}
+    Para este ejercicio analicemos $2$ versiones en la
+    demostración, \textit{i.e.},
+    \newcommand{\localtextbulletone}{\textcolor{black}{\raisebox{.45ex}{\rule{.6ex}{.6ex}}}}
+    \renewcommand{\labelitemi}{\localtextbulletone}
+    \begin{itemize}
+    \item \textbf{Demostración por Teorema del Bombeo.} Procedamos por reducción al absurdo,
+      supongamos que el lenguaje dado es regular y que $A = \langle Q_{A}, \Sigma, \delta_{A},
+      s, \mathbb{F}_{A} \rangle$ es un autómata determinista finito [en caso de no serlo,
+        siempre se puede reducir a un $DFA$] con $k$ estados y $L(A)$ como se definió previamente.
+      
+      Sea $\mathbf{a} = a^{i}b^{j}c^{r}$ una cadena aceptada por nuestro autómata con
+      \[
+      i + j + r > k \text{ y al menos } j > k.
+      \]
+      de lo anterior, podemos deducir que durante la lectura de la cadena $\mathbf{a}$, al
+      menos en $2$ ocasiones se pasa por algún estado $q$ en $A$ (es claro que $q$ debe ser
+      estado de A). Así, para la función $\delta_{A}$ de transición en $A$, tenemos que
+      \begin{eqnarray*}
+        \delta^{*}(s, a^{i}b^{m}) &=& q\\
+        \delta^{*}(q, b^{n}) &=& q\\
+        \delta^{*}(q, b^{l}c^{r}) &=& f \in \mathbb{F}_{A}.
+      \end{eqnarray*}
+      $\forall_{m,n,l} \in \mathbb{N}$. Donde $m + n + l = j$ y en particular $n \neq 0$ [$b^{n}$
+        no se colapsa a $\lambda$].
+      
+      Como $A$ es determinista, tenemos que para todo $p \in \mathbb{N}$ se cumple que
+      \[
+      \delta^{*}(q, b^{np}) = q
+      \]
+      como consecuencia, directa se tiene que
+      \[
+      \delta^{*}(s, a^{i}b^{m}b^{np}b^{l}c^{r}) = f \in \mathbb{F}_{A}.
+      \]
+      pero $m + np + l \neq j$ cuando $p \neq 1$. Por tanto $ a^{i}b^{m}b^{np}b^{l}c^{r} \in L(A)$,
+      lo que implica
+      \[
+      i + m + np + l + r = t^{2}
+      \]
+      con $t \in \mathbb{N}$. Sin embargo,
+      \[
+      i + m + np + l + r = t^{2}\; \not\rightarrow\; i + m + n(p + 1) + l + r = t^{2} + n = x^{2}\; !!!
+      \]
+      \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          \textbf{Contraejemplo:} Con $i = 6, m = 3, n = 4, l = 2, r = 1$.
+          \begin{eqnarray*}
+            16 &=& 6 + 3 + 4 + 2 + 1
+            \hspace*{4cm} \text{Con } p = 1.\\
+            20 &=& 6 + 3 + 4(2) + 2 + 1 = 6 + 3 + 8 + 2 + 1
+            \hspace*{0.5cm} \text{Con } p = 2.
+          \end{eqnarray*}
+          Claramente $20$ no es el cuadrado de un natural.
+      \end{minipage}}
+    \end{center}      
+      lo cual es una contradicción, pues esto debe funcionar para cualquier $p$ natural.
+      \[
+      \therefore\; \{\mathbf{a} \in \{a, b, c\}^{*}\; |\; \text{la longitud de $\mathbf{a}$
+        es el cuadrado de un natural.}\} \text{ \textbf{NO} es regular}.
+      \]
+    \item \textbf{Demostración por Teorema de Myhill-Nerode.} Por refutación, supongamos que
+      
+    \end{itemize}
+
+    En todos los casos se obvia que la demostración para $\mathbf{a} = \lambda$ [cadena vacía] es por vacuidad.
+  \end{proof}
 \end{enumerate}
 \end{document}
