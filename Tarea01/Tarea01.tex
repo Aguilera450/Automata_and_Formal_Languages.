@@ -248,57 +248,35 @@
   \[
   \mathcal{P}(Q) = \{\phi, \{S\}, \{1\}, \{2\}, \{S,1\}, \{S,2\}, \{1,2\}, \{S,1,2\}\}
   \]
-  Definamos $A = \langle Q_{D}, \Sigma, \delta_{D}, s_D, F_D\rangle$ cuya gráfica de
-  estados se presenta a continuación
-  \begin{center}
-    \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
-        final/.style={circle,draw=black,double},thick]
-      \node [estado,initial] (S) [right=30pt,  below=0pt]    {$\{S\}$};
-      \node [estado]         (0) [right=0pt,   above=150pt]  {$\phi$};
-      \node [estado]         (1) [right=100pt, above=100pt]  {$\{1\}$};
-      \node [estado]        (s1) [left=150pt,  below=0pt]    {$\{S,1\}$};
-      \node [estado,final]   (2) [left=100pt,  above=100pt]  {$\{2\}$};
-      \node [estado,final]  (s2) [left=50pt,   below=0pt]    {$\{S,2\}$};
-      \node [estado,final]  (12) [right=7pt,   below=120pt]  {$\{1,2\}$};
-      \node [estado,final] (s12) [right=150pt, below=0pt]    {$\{S,1,2\}$};
-      \path[->]
-      (S) edge [curve to, out=25,in=155,relative] node {$b$} (0)
-      (S) edge [curve to, out=25,in=155,relative] node {$a$} (1)
-      (s2) edge [curve to, out=25,in=155,relative] node {$b$} (2)
-      (1) edge [curve to, out=-5,in=155,relative] node {$a, b$} (12)
-      (s1) edge [curve to, out=25,in=-155,relative] node {$a, b$} (12)
-      (S) edge [curve to, out=25,in=155,relative] node {$\varepsilon$} (2)
-      (s1) edge [curve to, out=25,in=155,relative] node {$\varepsilon$} (2)
-      (1) edge [curve to, out=25,in=-155,relative] node {$\varepsilon$} (0)
-      (2) edge [curve to, out=135,in=-295,relative] node {$\varepsilon$} (1)
-      edge [loop right] node {$a,b$} (2)
-      (12) edge [curve to, out=-45,in=-135,relative] node {$\varepsilon$} (1)
-      edge [loop below] node {a,b} (12)
-      (s2) edge [curve to, out=25,in=-155,relative] node {$a, \varepsilon$} (12)
-      (s12) edge [curve to, out=25,in=155,relative] node {$a, b, \varepsilon$} (12);
-    \end{tikzpicture}
-  \end{center}
-  Ahora, veamos las transiciones a través de la función $\delta_{D}$ [que como sabemos,
+  
+  Veamos las transiciones a través de la función $\delta_{D}$ [que como sabemos,
     existe una equivalencia $\delta_{D} = \Delta^{*} = \Delta^{*}_{\varepsilon}$], así
   \begin{center}
-    \begin{tabular}{ c  c  c }
-      $\Delta^{*}_{\varepsilon}\left(\{S\}, \varepsilon\right) = \{2\}$ & $\Delta^{*}_{\varepsilon}\left(\{S\}, a\right) = \{1\}$
+    \begin{tabular}{ c  c }
+      $\Delta^{*}_{\varepsilon}\left(\{S\}, a\right) = \{1\}$
       & $\Delta^{*}_{\varepsilon}\left(\{S\}, b\right) = \phi$\\
-      $\Delta^{*}_{\varepsilon}\left(\{1\}, \varepsilon\right) = \phi$  & $\Delta^{*}_{\varepsilon}\left(\{1\}, a\right) = \{1,2\}$
+      $\Delta^{*}_{\varepsilon}\left(\{1\}, a\right) = \{1,2\}$
       & $\Delta^{*}_{\varepsilon}\left(\{1\}, b\right) = \{1,2\}$ \\
-      $\Delta^{*}_{\varepsilon}\left(\{2\}, \varepsilon\right) = \{1\}$ & $\Delta^{*}_{\varepsilon}\left(\{2\}, a\right) = \{2\}$
+      $\Delta^{*}_{\varepsilon}\left(\{2\}, a\right) = \{2\}$
       & $\Delta^{*}_{\varepsilon}\left(\{2\}, b\right) = \{2\}$\\
-      $\Delta^{*}_{\varepsilon}\left(\{1,2\}, \varepsilon\right) = \{1\}$ & $\Delta^{*}_{\varepsilon}\left(\{1,2\}, a\right) = \{1,2\}$
+      $\Delta^{*}_{\varepsilon}\left(\{1,2\}, a\right) = \{1,2\}$
       & $\Delta^{*}_{\varepsilon}\left(\{1,2\}, b\right) = \{1,2\}$ \\
-      $\Delta^{*}_{\varepsilon}\left(\{S,1\}, \varepsilon\right) = \{2\}$ & $\Delta^{*}_{\varepsilon}\left(\{S,1\}, a\right) = \{1,2\}$
+      $\Delta^{*}_{\varepsilon}\left(\{S,1\}, a\right) = \{1,2\}$
       & $\Delta^{*}_{\varepsilon}\left(\{S,1\}, b\right) = \{1,2\}$ \\
-      $\Delta^{*}_{\varepsilon}\left(\{S,2\}, \varepsilon\right) = \{1,2\}$ & $\Delta^{*}_{\varepsilon}\left(\{S,2\}, a\right) = \{1,2\}$
-      & $\Delta^{*}_{\varepsilon}\left(\{S,2\}, \varepsilon\right) = \{2\}$ \\
-      $\Delta^{*}_{\varepsilon}\left(\{S,1,2\}, \varepsilon\right) = \{1,2\}$ & $\Delta^{*}_{\varepsilon}\left(\{S,1,2\}, a\right) = \{1,2\}$
-      & $\Delta^{*}_{\varepsilon}\left(\{S,1,2\}, \varepsilon\right) = \{1,2\}$\\
+      $\Delta^{*}_{\varepsilon}\left(\{S,2\}, a\right) = \{1,2\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{S,2\}, b\right) = \{2\}$ \\
+      $\Delta^{*}_{\varepsilon}\left(\{S,1,2\}, a\right) = \{1,2\}$
+      & $\Delta^{*}_{\varepsilon}\left(\{S,1,2\}, b\right) = \{1,2\}$\\
     \end{tabular} 
   \end{center}
-  Por último se presenta la tabla de transiciones del autómata $A$:
+  Es necesario hacer notar que $\Delta^{*}_{\varepsilon}\left(\{S\}, \varepsilon\right) = \{2\}$,
+  como no queremos transiciones-$\varepsilon$, entonces reasignamos
+  $\Delta^{*}_{\varepsilon}\left(\{S\}, a\right) = \{1,2\}$. Mismo caso con
+  $\Delta^{*}_{\varepsilon}\left(\{2\}, \varepsilon\right) = \{1\}$, así reasignamos a
+  $\Delta^{*}_{\varepsilon}\left(\{2\}, a\right) = \{1,2\}$.
+  
+  Así, se presenta la tabla de transiciones del autómata $A$ [el autómata en $DFA$
+    resultado de transformar $A_{\varepsilon}$]:
   \begin{center}
     \begin{tabular}{| c | c | c | c | c | c | c | c | c |}
       \hline
@@ -312,6 +290,46 @@
       $\mathbf{\{S,2\}}$  & -- & -- & -- & $b$ & $a, \varepsilon$ & -- & -- & --  \\\hline
       $\mathbf{\{S,1,2\}}$  & -- & -- & -- & -- & $a,b,\varepsilon$ & --  & -- & -- \\\hline
     \end{tabular} 
+  \end{center}
+  \textbf{TABLA EN MODIFICACIÓN.}
+  
+  Luego, definamos $A = \langle Q_{D}, \Sigma, \delta_{D}, s_D, F_D\rangle$ cuya gráfica de
+  estados se presenta a continuación
+  \begin{center}
+    \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
+        final/.style={circle,draw=black,double},thick]
+      \node [estado,initial, final] (s12) [right=150pt, below=0pt]    {$\{S,1,2\}$};
+      \node [estado]                  (S) [right=30pt,  above=20pt]   {$\{S\}$};
+      \node [estado]                  (0) [right=0pt,   above=150pt]  {$\phi$};
+      \node [estado]                  (1) [right=100pt, above=100pt]  {$\{1\}$};
+      \node [estado]                 (s1) [left=150pt,  below=0pt]    {$\{S,1\}$};
+      \node [estado,final]            (2) [left=100pt,  above=100pt]  {$\{2\}$};
+      \node [estado,final]           (s2) [left=90pt,   above=10pt]   {$\{S,2\}$};
+      \node [estado,final]           (12) [right=7pt,   below=120pt]  {$\{1,2\}$};
+      \path[->]
+      (S)   edge [curve to, out=25,in=155,relative]  node {$b$}    (0)
+      (S)   edge [curve to, out=5,in=155,relative]   node {$a$}    (12)
+      (s2)  edge [curve to, out=25,in=155,relative]  node {$b$}    (2)
+      (1)   edge [curve to, out=-5,in=155,relative]  node {$a, b$} (12)
+      (s1)  edge [curve to, out=25,in=-155,relative] node {$a, b$} (12)
+      (2)   edge [curve to, out=25,in=155,relative]  node {$a$}    (12)
+      (2)   edge [loop right]                        node {$b$}  (2)
+      (12)  edge [loop below]                        node {$a,b$}  (12)
+      (s2)  edge [curve to, out=25,in=-155,relative] node {$a$}    (12)
+      (s12) edge [curve to, out=25,in=155,relative]  node {$a, b$} (12);
+    \end{tikzpicture}
+  \end{center}
+  Como en $A$ existen estados inaccesibles, podemos precindir de estos, lo que
+  nos genera una nueva gráfica de estados de $A$, esta es
+    \begin{center}
+    \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
+        final/.style={circle,draw=black,double},thick]
+      \node [estado,initial, final] (s12) [left=0pt]  {$\{S,1,2\}$};
+      \node [estado,final]           (12) [right=37pt]  {$\{1,2\}$};
+      \path[->]
+      (s12) edge [curve to, out=0,in=180,relative]  node {$a, b$} (12)
+      (12)  edge [loop right]                       node {$a,b$}  (12);
+    \end{tikzpicture}
   \end{center}
   \hfill $\lhd$
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ejercicio 03. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
@@ -340,11 +358,11 @@
       \node [estado]         (11) [right=100pt, below=80pt] {$q_{12}$};
       \node [estado,final]   (12) [below=20pt, right=100pt] {$q_{13}$};
       \node [estado]         (13)  [below=20pt, left=50pt]  {$q_{14}$};
-      \node [estado]         (14)  [below=20pt, right=50pt]  {$q_{15}$};
+      \node [estado]         (14)  [below=20pt, right=50pt] {$q_{15}$};
       \path[->]
       (S)  edge [curve to, out=25,in=155,relative]   node {$\varepsilon$}   (0)
       (S)  edge [curve to, out=-25,in=-155,relative] node {$\varepsilon$}   (1)
-      %(0)  edge [curve to, out=10,in=190,relative]   node {$\varepsilon$}   (10)
+      (0)  edge [curve to, out=10,in=190,relative]   node {$\varepsilon$}   (10)
       (0)  edge [curve to, out=0,in=155,relative]    node {$\varepsilon$}   (2)
       (3)  edge [curve to, out=0,in=-155,relative]   node {$\varepsilon$}   (0)
       (2)  edge [curve to, out=0,in=180,relative]    node {$1$}             (6)
