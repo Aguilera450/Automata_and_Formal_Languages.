@@ -14,6 +14,11 @@
 %% Identación
 \setlength{\parindent}{0cm}
 
+%% Matrices
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
 % Código
 \newcommand{\code}[1]{\textcolor{white!25!black}{\texttt{#1}}}
 \usepackage{listings}
@@ -76,7 +81,7 @@
 \pagestyle{fancyplain}
 
 \begin{document}
-\title{UNIVERSIDAD AUT\'ONOMA DE M\'EXICO\\ Facultad de Ciencias}
+\title{UNIVERSIDAD NACIONAL AUT\'ONOMA DE M\'EXICO\\ Facultad de Ciencias}
 \author{Autor: Adri\'an Aguilera Moreno}
 \date{}
 \maketitle
@@ -117,7 +122,8 @@
     \[
     |abababcbacbabc| = |aaaaabbbbbbccc| = |a^{5}b^{6}c^{3}|
     \]
-    por tanto, en las demostraciones supondré, sin pérdida de generalidad, que
+    Lo anterior se puede generalizar usando inducción. Por tanto, en las demostraciones
+    supondré, sin pérdida de generalidad, que
     \[
     \mathbf{a} = a^{i}b^{j}c^{r}
     \]
@@ -251,8 +257,74 @@
     \[
     \therefore\; \{\mathbf{a} \in \{a, b, c\}^{*}\; |\; \text{la longitud de $\mathbf{a}$
       es el cuadrado de un natural.}\} \text{ \textbf{NO} es regular}.
-      \]
+    \]
   \end{proof}
 \item Minimiza el autómata de tu respuesta al ejercicio $2$ de la tarea $1$.
+  
+    $\triangledown$ \textbf{Solución:}
+    El autómata del ejercicio $2$ en la tarea $1$ se presenta a continuación:
+    \begin{center}
+      \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
+          final/.style={circle,draw=black,double},thick]
+        \node [estado,initial, final] (s12) [left=0pt]  {$\{S,1,2\}$};
+        \node [estado,final]           (12) [right=37pt]  {$\{1,2\}$};
+        \path[->]
+        (s12) edge [curve to, out=0,in=180,relative]  node {$a, b$} (12)
+        (12)  edge [loop right]                       node {$a,b$}  (12);
+      \end{tikzpicture}
+    \end{center}
+    Al que llameremos $A$. Para la simplicidad de la solución consideremos
+    \begin{eqnarray*}
+      \mathbf{S} &=& \{S,1,2\}\\
+      \mathbf{q} &=& \{1,2\}
+    \end{eqnarray*}
+    así, como $\mathbf{S}$ y $\mathbf{q}$ son estados finales, tenemos
+    que la matriz que les representa se ve como la que se muestra a
+    continuación:
+    \[
+    \bordermatrix{
+                  & \mathbf{S}     & \mathbf{q} \cr
+       \mathbf{S} &     n          &      n     \cr
+       \mathbf{q} &     n          &      n     \cr
+    }
+    \]
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          \textbf{Obs.} Podemos omitir analizar la diagonal y la parte (triangular)
+          inferior de la matriz, pues nuestra matriz es simétrica, y por el algoritmo
+          de Minimalización, esto se cumplirá al inicio de las iteraciones y en cuanto
+          termine.
+      \end{minipage}}
+    \end{center}      
+    Ahora analicemos la $(2,2)$-pocisión en la matriz con respecto
+    al algoritmo de Minimización, esto es
+    \begin{eqnarray*}
+      (s,q) &=& n.\\
+      \left(\delta_A(\mathbf{S}, a), \delta_A(\mathbf{q}, a)\right) &=& (\mathbf{q}, \mathbf{q})\\
+      &=& n.\\
+      \left(\delta_A(\mathbf{S}, b), \delta_A(\mathbf{q}, b)\right) &=& (\mathbf{q}, \mathbf{q})\\
+      &=& n.
+    \end{eqnarray*}
+    por el algoritmo de Minimalización tenemos que si $(q_{i}, q_{j}) = n$,
+    entonces $q_{i} \approx q_{j}$. Por tanto $\mathbf{S} \approx \mathbf{q}$
+    [esto es, que formen parte de la misma clase de equivalencia].
+
+    Así, el autómata cociente de $A$ es el que a continuación se presenta:
+    \begin{center}
+      \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
+          final/.style={circle,draw=black,double},thick]
+        \node [estado,initial, final] (s) [left=0pt]  {$S'$};
+        \path[->]
+        (s)  edge [loop right]                       node {$a,b$}  (s);
+      \end{tikzpicture}
+    \end{center}
+    \hfill $\lhd$
+  \item Da una $CFG$ para el lenguaje
+    \[
+    \{a^{n}b^{2n}c^{k}|1 \leq k, n\}.
+    \]
+    
 \end{enumerate}
 \end{document}
