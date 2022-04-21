@@ -96,6 +96,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{\LARGE{Tarea 2}}
 \begin{enumerate}
+  %%%%%%%%%%%%%%%%%%%%%% Ejercicio 1.
 \item Demuestra que el lenguaje
   \[
   \{\mathbf{a} \in \{a, b, c\}^{*}\; |\; \text{la longitud de $\mathbf{a}$
@@ -242,15 +243,17 @@
         \end{eqnarray*}
         como podemos observar, sucede lo mismo que en el caso anterior, pues
         $w^2 - v^2 = z^2$ y $v^2 + w^2 = t^2$ solo se cumplen para ternas pitagóricas específicas
-        y no para cualesquiera naturales, luego llegamos a contradecir el teorema de
-        Myhill-Nerode.
+        y no para cualesquiera naturales.
       \end{itemize}
+      De lo anterior, tenemos que $\alpha \not \equiv_{L} \beta$ (pues no hay afinación en $L$),
+      lo que implica que existe una cantidad infinita de clases de equivalencias, esto contradice
+      el punto $3$ del Teorema de Myhill-Nerode (el tener índice finito), luego
       \[
       \therefore\; \{\mathbf{a} \in \{a, b, c\}^{*}\; |\; \text{la longitud de $\mathbf{a}$
         es el cuadrado de un natural.}\} \text{ \textbf{NO} es regular}.
       \]
     \end{itemize}
-
+    
     En todos los casos se obvia que la demostración para $\mathbf{a} = \lambda$ [cadena vacía] es por vacuidad.
     
     De los analisis anteriores (tanto por Teo. del Bombeo como del Teo. de Myhill-Nerode) concluimos que
@@ -259,6 +262,7 @@
       es el cuadrado de un natural.}\} \text{ \textbf{NO} es regular}.
     \]
   \end{proof}
+  %%%%%%%%%%%%%%%%%%%%%% Ejercicio 2.
 \item Minimiza el autómata de tu respuesta al ejercicio $2$ de la tarea $1$.
   
     $\triangledown$ \textbf{Solución:}
@@ -321,10 +325,97 @@
       \end{tikzpicture}
     \end{center}
     \hfill $\lhd$
+    %%%%%%%%%%%%%%%%%%%%%% Ejercicio 3.
   \item Da una $CFG$ para el lenguaje
     \[
     \{a^{n}b^{2n}c^{k}|1 \leq k, n\}.
     \]
+    $\triangledown$ \textbf{Solución:}
     
+    Sea $G = \langle \{a,b,c\}, \{S, X, Y, Z\}, S, \rightarrow_{G} \rangle$, donde
+    las reglas de producción estan dadas por
+    \begin{eqnarray*}
+      S &\rightarrow_{G}& XYYZ\\
+      X &\rightarrow_{G}& a\; |\; aXYY\\
+      Y &\rightarrow_{G}& b\\
+      Z &\rightarrow_{G}& c\; |\; ZZ
+    \end{eqnarray*}
+    Para mayor practicidad en los ejercicios siguientes, definimos
+    \begin{eqnarray*}
+      \Sigma_{G} &=& \{a,b,c\}\\
+      \Gamma_{G} &=& \{S,X,Y,Z\}
+    \end{eqnarray*}
+    de lo anterior, se muestra un ejemplo de derivación con base a la gramática
+    propuesta
+    \begin{eqnarray*}
+      S &\Rightarrow_{G}& XYYZ\\
+      &\Rightarrow_{G}& (aXYY)YYZ\\
+      &\Rightarrow_{G}& a(a)YYYYZ\\
+      &\Rightarrow_{G}& aa(b)YYYZ\\
+      &\Rightarrow_{G}& aab(b)YYZ\\
+      &\Rightarrow_{G}& aabb(b)YZ\\
+      &\Rightarrow_{G}& aabbb(b)Z\\
+      &\Rightarrow_{G}& aabbbb(ZZ)\\
+      &\Rightarrow_{G}& aabbbb(ZZZ)\\
+      &\Rightarrow_{G}& aabbbb(c)ZZ\\
+      &\Rightarrow_{G}& aabbbbc(c)Z\\
+      &\Rightarrow_{G}& aabbbbcc(c).
+    \end{eqnarray*}
+    Los paréntesis solo son para ayudar a identificar la sustitución en cada
+    iteración.
+    \hfill $\lhd$
+    %%%%%%%%%%%%%%%%%%%%%% Ejercicio 4.
+  \item Transforma la gramática de $3$ a forma normal de Chomsky.
+    
+    $\triangledown$ \textbf{Solución:}
+    Sea $G'$ la gramática a construir. Aplicando la regla 1 del algoritmo de
+    transformación a CNF, tenemos que
+    \begin{eqnarray*}
+      A_{a} &\rightarrow& a\\
+      A_{b} &\rightarrow& b\\
+      A_{c} &\rightarrow& c
+    \end{eqnarray*}
+    Así, las reglas de producción se ven modificadas
+    \begin{eqnarray*}
+      S &\rightarrow& XYYZ\\
+      X &\rightarrow& a\; |\; A_aXYY\\
+      Y &\rightarrow& b\\
+      Z &\rightarrow& c\; |\; ZZ\\
+      A_{a} &\rightarrow& a\\
+      A_{b} &\rightarrow& b\\
+      A_{c} &\rightarrow& c
+    \end{eqnarray*}
+    Ahora tenemos símbolos no terminales, pero no cumplen ser CNF, los
+    únicos que de momento cumplen estar en CNF son los símbolos del alfabeto.
+    Luego, por la regla $3$ del algoritmo de transformación a CNF, tenemos que
+    \begin{eqnarray*}
+      C_{1} &\rightarrow& XY\\
+      C_{2} &\rightarrow& YZ\\
+      C_{3} &\rightarrow& A_{a}X\\
+      C_{4} &\rightarrow& YY
+    \end{eqnarray*}
+    Ejecutando $4$ y $5$ en el algoritmo de transformación a CNF, obtenemos
+    \begin{eqnarray*}
+      S &\rightarrow_{G'}& C_{1}C_{2}\\
+      X &\rightarrow_{G'}& a\; |\; C_{3}C_{4}\\
+      Y &\rightarrow_{G'}& b\\
+      Z &\rightarrow_{G'}& c\; |\; ZZ\\
+      A_{a} &\rightarrow_{G'}& a\\
+      A_{b} &\rightarrow_{G'}& b\\
+      A_{c} &\rightarrow_{G'}& c\\
+      C_{1} &\rightarrow_{G'}& XY\\
+      C_{2} &\rightarrow_{G'}& YZ\\
+      C_{3} &\rightarrow_{G'}& A_{a}X\\
+      C_{4} &\rightarrow_{G'}& YY
+    \end{eqnarray*}
+    De lo anterior, es claro que $G'$ esta en CNF.
+    \hfill $\lhd$
+    %%%%%%%%%%%%%%%%%%%%%% Ejercicio 4.
+  \item Transforma la gramática de $3$ a forma normal de Greibach (basta con
+    que presentes algunas reglas de producción representativas).
+    
+    $\triangledown$ \textbf{Solución:}
+    
+    \hfill $\lhd$
 \end{enumerate}
 \end{document}
