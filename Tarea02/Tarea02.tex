@@ -232,7 +232,7 @@
       \item Si $v > w$, entonces
         \begin{eqnarray*}
           y^{v^2 - w^2 + w^2} \cdot x^{w^2} &=& y^{v^2 - w^2} \cdot (xy)^{w^2 + w^2}\\
-          &=& y^{v^2 - w^2} \cdot \left((xy)^{w^2}\right)^2
+          &=& y^{v^2 - w^2} \cdot \left((xy)^{w^2}\right)^2 \hspace*{1cm} \text{Se usa el supuesto del principio.}
         \end{eqnarray*}
         sabemos que $v^2 - w^2 = z^2$ solo para $\{v,w,z\}$ una terna pitagórica, y no es
         cierto para cualesquiera naturales, esto contradice que $\beta \varphi \in L$, sin
@@ -326,7 +326,7 @@
     \end{center}
     \hfill $\lhd$
     %%%%%%%%%%%%%%%%%%%%%% Ejercicio 3.
-  \item Da una $CFG$ para el lenguaje
+  \item Da una CFG para el lenguaje
     \[
     \{a^{n}b^{2n}c^{k}|1 \leq k, n\}.
     \]
@@ -408,14 +408,382 @@
       C_{3} &\rightarrow_{G'}& A_{a}X\\
       C_{4} &\rightarrow_{G'}& YY
     \end{eqnarray*}
-    De lo anterior, es claro que $G'$ esta en CNF.
+    Eliminando símbolos inútiles tenemos que
+    \begin{eqnarray*}
+      S &\rightarrow_{G'}& C_{1}C_{2}\\
+      X &\rightarrow_{G'}& a\; |\; C_{3}C_{4}\\
+      Y &\rightarrow_{G'}& b\\
+      Z &\rightarrow_{G'}& c\; |\; ZZ\\
+      A_{a} &\rightarrow_{G'}& a\\
+      C_{1} &\rightarrow_{G'}& XY\\
+      C_{2} &\rightarrow_{G'}& YZ\\
+      C_{3} &\rightarrow_{G'}& A_{a}X\\
+      C_{4} &\rightarrow_{G'}& YY
+    \end{eqnarray*}
+    De lo anterior, es claro que $G'$ esta en CNF con:
+    \[
+    G' = \langle \{a,b,c\}, \{S, C_1, C_2, C_3, X, Y, Z, A_a\}, S, \rightarrow_{G'} \rangle
+    \]
     \hfill $\lhd$
-    %%%%%%%%%%%%%%%%%%%%%% Ejercicio 4.
+    %%%%%%%%%%%%%%%%%%%%%% Ejercicio 5.
   \item Transforma la gramática de $3$ a forma normal de Greibach (basta con
     que presentes algunas reglas de producción representativas).
     
     $\triangledown$ \textbf{Solución:}
+    Empecemos encontrando las expresiones regulares (o conjuntos) $R_{A,a}$ que indica la
+    iteración $1$ del algoritmo para transformar a GNF, esto es
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          Para $R_{S,\alpha}$ con $\alpha \in \Sigma_G$ tenemos que
+          \begin{eqnarray*}
+            R_{S,a} &=& Y C_2 + X C_4 Y C_2\\
+            R_{S,b} = &\{\}& = R_{S,c}
+          \end{eqnarray*}
+          pues
+          \begin{eqnarray*}
+            S \Rightarrow C_1 C_2 \Rightarrow X Y C_2 &\Rightarrow& aYC_2.\\
+            &\Rightarrow& C_3 C_4 Y C_2 \Rightarrow A_a X C_4 Y C_2  \Rightarrow a X C_4 Y C_2.
+          \end{eqnarray*}
+      \end{minipage}}
+    \end{center}
     
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          Para $R_{X,\alpha}$ con $\alpha \in \Sigma_G$ tenemos que
+          \begin{eqnarray*}
+            R_{X,a} &=& \lambda + X C_4 \\
+            R_{X,b} = &\{\}& = R_{X,c}
+          \end{eqnarray*}
+          pues
+          \begin{eqnarray*}
+            X \Rightarrow C_3 C_4 \Rightarrow  A_a X C_4  \Rightarrow a X C_4 .
+          \end{eqnarray*}
+      \end{minipage}}
+    \end{center}
+    
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          Para $R_{Y,\alpha}$ con $\alpha \in \Sigma_G$ tenemos que
+          \begin{eqnarray*}
+            R_{Y,b} &=& \lambda \\
+            R_{Y,a} = &\{\}& = R_{Y,c}
+          \end{eqnarray*}
+          pues $Y \Rightarrow b$.
+      \end{minipage}}
+    \end{center}
+    
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          Para $R_{Z,\alpha}$ con $\alpha \in \Sigma_G$ tenemos que
+          \begin{eqnarray*}
+            R_{Z,c} &=& \lambda + Z\\
+            R_{Z,a} = &\{\}& = R_{Z,b}
+          \end{eqnarray*}
+          pues
+           \begin{eqnarray*}
+            Z &\Rightarrow& C.\\
+            &\Rightarrow& ZZ \Rightarrow cZ.
+           \end{eqnarray*}
+           en este caso en particular podemos producir $Z \Rightarrow Z \dotsm Z$
+           un número a lo más de $k$ veces, sin embargo nuestra definición de $Z$
+           es suficiente\footnote{pues $k$ es un natural, por tanto la cadena $Z
+           \Rightarrow Z \dotsm Z$ es finita.} y es por esto que no se incluyen
+           en la expresión regular de $R_{Z,c}$.
+      \end{minipage}}
+    \end{center}
+    
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          Para $R_{C_1,\alpha}$ con $\alpha \in \Sigma_G$ tenemos que
+          \begin{eqnarray*}
+            R_{C_1,a} &=& Y + X C_4 Y\\
+            R_{C_1,b} = &\{\}& = R_{C_1,c}
+          \end{eqnarray*}
+          pues
+          \begin{eqnarray*}
+            C_1 \Rightarrow XY &\Rightarrow& aY.\\
+            &\Rightarrow& C_3 C_4 Y \Rightarrow A_a X C_4 Y \Rightarrow a X C_4 Y.
+          \end{eqnarray*}
+      \end{minipage}}
+    \end{center}
+    
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          Para $R_{C_2,\alpha}$ con $\alpha \in \Sigma_G$ tenemos que
+          \begin{eqnarray*}
+            R_{C_2,b} &=& Z \\
+            R_{C_2,a} = &\{\}& = R_{C_2,c}
+          \end{eqnarray*}
+          pues $C_2 \Rightarrow YZ \Rightarrow bZ$.
+      \end{minipage}}
+    \end{center}
+    
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          Para $R_{C_3,\alpha}$ con $\alpha \in \Sigma_G$ tenemos que
+          \begin{eqnarray*}
+            R_{C_3,a} &=& X \\
+            R_{C_3,b} = &\{\}& = R_{C_3,c}
+          \end{eqnarray*}
+          pues $C_3 \Rightarrow A_a X \Rightarrow aX$.
+      \end{minipage}}
+    \end{center}
+    
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          Para $R_{C_4,\alpha}$ con $\alpha \in \Sigma_G$ tenemos que
+          \begin{eqnarray*}
+            R_{C_4,a} &=& X \\
+            R_{C_4,b} = &\{\}& = R_{C_4,c}
+          \end{eqnarray*}
+          pues $C_4 \Rightarrow Y Y \Rightarrow bY$.
+      \end{minipage}}
+    \end{center}
+    Ahora, encontremos las gramáticas lineales por la izquierda que indica
+    la iteración $2$ del algoritmo de transformación a GNF, esto es
+    \begin{eqnarray*}
+      T_{S,a} &\rightarrow& Y C_2\; |\; X C_4 Y C_2\\
+      T_{X,a} &\rightarrow& \lambda\; |\; X C_4\;\\
+      T_{Y,b} &\rightarrow& \lambda\\
+      T_{Z,c} &\rightarrow& \lambda\; |\; Z\\
+      T_{C_1,a} &\rightarrow& Y\; |\; X C_4 Y\\
+      T_{C_2,b} &\rightarrow& Z\\
+      T_{C_3,a} &\rightarrow& X\\
+      T_{C_4,a} &\rightarrow& Y
+    \end{eqnarray*}
+    Bajo la misma iteración, sustituimos las reglas para llevarlas a la forma
+    GNF
+    \begin{eqnarray*}
+      Y &\rightarrow& b\\
+      A_a &\rightarrow& a\\
+      S &\rightarrow& a T_{C_1, a} C_2
+      \hspace*{2cm} \text{Sustituimos en } S \text{ de } G'.\\
+      X &\rightarrow& a\; |\; a T_{C_3, a} C_4
+      \hspace*{1.5cm} \text{Sustituimos en } X \text{ de } G'.\\
+      Z &\rightarrow& c\; |\; c Z
+      \hspace*{2.5cm} \text{Sustituimos en } Z \text{ de } G'.\\
+      C_1 &\rightarrow& aY\; |\; a X C_4 Y
+      \hspace*{1.4cm} \text{Sustituimos en } C_1 \text{ de } G'.\\
+      C_2 &\rightarrow& bZ
+      \hspace*{2.9cm} \text{Sustituimos en } C_2 \text{ de } G'.\\
+      C_3 &\rightarrow& aX
+      \hspace*{2.8cm} \text{Sustituimos en } C_3 \text{ de } G'.\\
+      C_4 &\rightarrow& bY
+      \hspace*{2.9cm} \text{Sustituimos en } C_4 \text{ de } G'.\\
+      T_{S,a} &\rightarrow& b C_2\; |\; a C_4 Y C_2\; |\; a T_{c_3, a} C_4 Y C_2\\
+      T_{X,a} &\rightarrow& \lambda\; |\; a C_4\; |\; a T_{C_3, a} C_4^2\\
+      T_{Y,b} &\rightarrow& \lambda\\
+      T_{Z,c} &\rightarrow& \lambda\; |\; bZ\\
+      T_{C_1,a} &\rightarrow& b\; |\; a C_4 Y\; |\; a T_{C_3,a} C_4^2 Y\\
+      T_{C_2,b} &\rightarrow& c|cZ\\
+      T_{C_3,a} &\rightarrow& a\; |\; a T_{C_3, a} C_4\\
+      T_{C_4,a} &\rightarrow& b
+    \end{eqnarray*}
+    Para todas las $T_{i,j}$ se hacen modificaciones con respecto a la gramática lineal
+    generada con anterioridad.
+    
+    Ahora, por la iteración $3$ del algoritmo de transformación a GNF, procedamos a
+    eliminar las producciones-$\varepsilon$. Así,
+    \begin{eqnarray*}
+      Y &\rightarrow& b\\
+      A_a &\rightarrow& a\\
+      S &\rightarrow& a T_{C_1, a} C_2\\
+      X &\rightarrow& a\; |\; a T_{C_3, a} C_4 \\
+      Z &\rightarrow& c\; |\; c Z\\
+      C_1 &\rightarrow& aY\; |\; a X C_4 Y\\
+      C_2 &\rightarrow& bZ\\
+      C_3 &\rightarrow& aX\\
+      C_4 &\rightarrow& bY\\
+      T_{S,a} &\rightarrow& b C_2\; |\; a C_4 Y C_2\; |\; a T_{c_3, a} C_4 Y C_2\\
+      T_{X,a} &\rightarrow&  a C_4\; |\; a T_{C_3, a} C_4^2\\
+      %T_{Y,b} &\rightarrow& \lambda\\
+      T_{Z,c} &\rightarrow&  bZ\\
+      T_{C_1,a} &\rightarrow& b\; |\; a C_4 Y\; |\; a T_{C_3,a} C_4^2 Y\\
+      T_{C_2,b} &\rightarrow& c|cZ\\
+      T_{C_3,a} &\rightarrow& a\; |\; a T_{C_3, a} C_4\\
+      T_{C_4,a} &\rightarrow& b
+    \end{eqnarray*}
+    por último eliminemos los símbolos inaccesibles, \textit{i.e.},
+    \begin{eqnarray*}
+      S &\rightarrow& a T_{C_1, a} C_2\\
+      Y &\rightarrow& b\\
+      A_a &\rightarrow& a\\
+      X &\rightarrow& a\; |\; a T_{C_3, a} C_4 \\
+      Z &\rightarrow& c\; |\; c Z\\
+      %C_1 &\rightarrow& aY\; |\; a X C_4 Y\\
+      C_2 &\rightarrow& bZ\\
+      %C_3 &\rightarrow& aX\\
+      C_4 &\rightarrow& bY\\
+      %T_{S,a} &\rightarrow& b C_2\; |\; a C_4 Y C_2\; |\; a T_{c_3, a} C_4 Y C_2\\
+      %T_{X,a} &\rightarrow&  a C_4\; |\; a T_{C_3, a} C_4^2\\
+      %T_{Y,b} &\rightarrow& \lambda\\
+      %T_{Z,c} &\rightarrow&  bZ\\
+      %T_{C_1,a} &\rightarrow& b\; |\; a C_4 Y\; |\; a T_{C_3,a} C_4^2 Y\\
+      T_{C_2,b} &\rightarrow& c|cZ\\
+      T_{C_3,a} &\rightarrow& a\; |\; a T_{C_3, a} C_4
+      %T_{C_4,a} &\rightarrow& b
+    \end{eqnarray*}
+    Se puede comprobar por fuerza bruta (y por inducción) que la gramática
+    anterior se encuentra en GNF.
     \hfill $\lhd$
+  \item Demuestra que el conjunto
+    \[
+    \{a^n b^m c^k\; |\; n = k \land k = 3m\}
+    \]
+    no es un CFL.
+    \begin{proof}
+      Veamos que nuestro lenguaje es equivalente a
+      \[
+       \{a^{3m} b^m c^{3m}\}
+      \]
+      Así, analicemos $6$ posibles casos:
+      \newcommand{\localtextbulletone}{\textcolor{black}{\raisebox{.45ex}{\rule{.6ex}{.6ex}}}}
+      \renewcommand{\labelitemi}{\localtextbulletone}
+      \begin{itemize}
+      \item Supongamos, sin pérdida de generalidad, que bombearemos $a^i$ [un extremo\footnote{Nótese que esto es análogo a bombear $c^i$.}]
+        en nuestro lenguaje. Esto es,
+        \begin{eqnarray*}
+          a^{3m - i} \underbrace{a \dotsm a}_{\alpha} b^m c^{3m}
+        \end{eqnarray*}
+        
+        \begin{center}
+          \fbox{
+            \begin{minipage}[b][1\height]%
+              [t]{0.867\textwidth}
+              \textbf{Obs.} Se puede bombear en cualquier parte de la cadena de $a$'s.
+          \end{minipage}}
+        \end{center}
+
+        con $|\alpha| = ri \in \mathbb{N}$. Esto se cumple solo cuando $r = 1$, en otro caso
+        \begin{itemize}
+        \item $r > 1$. Entonces,
+          \begin{eqnarray*}
+            (3m - i) + i &<& (3m - i) + ri\\
+            \Rightarrow 3m &<& (3m - i) + ri.
+          \end{eqnarray*}
+          lo que implica que $|a^{3m - i}\alpha| > |c^{3m}|$, ahora es claro que esa cadena no esta en $L$.
+        \item $r = 0$. Entonces,
+          \begin{eqnarray*}
+            (3m - i) + i &>& (3m - i) + ri\\
+            &>& (3m - i) + 0\\
+            \Rightarrow 3m &>& 3m - i.
+          \end{eqnarray*}
+          lo que implica que $|a^{3m - i}\alpha| < |c^{3m}|$, ahora es claro que esa cadena no esta en $L$.
+        \end{itemize}
+        
+      \item  Supongamos, sin pérdida de generalidad, que bombearemos $a^i$ y $c^j$ [Extremos]
+        en nuestro lenguaje. Esto es,
+        \begin{eqnarray*}
+          a^{3m - i} \underbrace{a \dotsm a}_{\alpha} b^m \underbrace{c \dotsm c}_{\varphi}c^{3m - j}
+        \end{eqnarray*}
+        
+        \begin{center}
+          \fbox{
+            \begin{minipage}[b][1\height]%
+              [t]{0.867\textwidth}
+              \textbf{Obs.} Se puede bombear en cualquier parte de las cadenas de $a$'s y $c$'s respectivamente.
+          \end{minipage}}
+        \end{center}
+        
+        con
+        \begin{itemize}
+        \item $|\alpha| = ri = rj = |\beta| \neq 1$. Entonces,
+          
+          Caso 1: $ri = 0$.
+          \begin{eqnarray*}
+            3m &>& (3m - i) + ri = (3m - j) + pj\\
+            &>& 3m - i = 3m - j.
+          \end{eqnarray*}
+          lo que implica que $3|b^m| > |a^{3m - i}\alpha| = |c^{3m - j}\beta|$, ahora es claro que esa cadena no esta en $L$.
+          
+          Caso 2: $ri > 1$.
+          \begin{eqnarray*}
+            3m &<& (3m - i) + ri = (3m - j) + pj\\
+            &<& 3m + (r - 1)i = 3m + (p - 1)j.
+          \end{eqnarray*}
+          el caso mínimo es cuando $r = 2 = p$, entonces nos quedan $3m + i = 3m + j$ como longitudes de $\alpha$
+          y $\beta$ respectivamente, luego descartamos la cadena de $L$ por no cumplir que $ |a^{3m - i}\alpha| = 3|b^m| = |c^{3m - j}\beta|$.
+        \item $|\alpha| \neq |\beta|$ y $|\alpha| = ri$, $|\beta| = pj$. Entonces,
+          \begin{eqnarray*}
+            3m \neq (3m - i) + ri &\text{ y }& 3m \neq (3m - j) + pj\\
+            \hspace{0.5cm} \neq 3m + (r - 1)i. & & \hspace*{0.6cm}\neq 3m + (p - 1)j.
+          \end{eqnarray*}
+          lo cual es claro por los ejemplos más desarrollados arriba. Así, esas cadenas no pertenecen
+          a $L$.
+        \end{itemize}
+      \item Supongamos, sin pérdida de generalidad, que bombearemos $b^i$ [Medio]
+        en nuestro lenguaje. Esto es,
+        
+        \begin{eqnarray*}
+          a^{3m} b^{m- (i + j)}\underbrace{b \dotsm b}_{\alpha} b^{j} c^{3m}
+        \end{eqnarray*}
+        
+        \begin{center}
+          \fbox{
+            \begin{minipage}[b][1\height]%
+              [t]{0.867\textwidth}
+              \textbf{Obs.} Se puede bombear en cualquier parte de la cadena de $b$'s.
+          \end{minipage}}
+        \end{center}
+        
+        con $|\alpha| = ri$. Entonces la cadena solo pertenece a $L$ cuando $r = 1$, en otro caso
+        \[
+        m - (i + j) + i + j = m \not= m - (i + j) + ri + j
+        \]
+        Así, las cadenas de esa forma no son parte de $L$.
+      \item Supongamos, sin pérdida de generalidad, que bombearemos las subcadenas $a^{i}$ y $b^{j}$
+        [Medio y un extremo \footnote{Esto es análogo a bombear $b^{i}$ y $c^{j}$.}] en nuestro lenguaje.
+        Esto es,
+        \begin{eqnarray*}
+          a^{3m - i} \underbrace{a \dotsm a}_{\alpha} b^{m- j}\underbrace{b \dotsm b}_{\beta} c^{3m}
+        \end{eqnarray*}
+        
+        \begin{center}
+          \fbox{
+            \begin{minipage}[b][1\height]%
+              [t]{0.867\textwidth}
+              \textbf{Obs.} Se puede bombear en cualquier parte de las cadenas de $a$'s y $b$'s respectivamente.
+          \end{minipage}}
+        \end{center}
+        
+        con $|\alpha| = ri$ y $|\beta| = pj$. De lo anterior, la única cadena que esta en el lenguaje es cuando
+        $r = 1 = p$. En otro caso, pasa el primer caso y el anterior, con lo cual ya vimos que las cadenas generadas
+        no pertenecen a $L$.
+      \item Otro caso que vale la pena analizar y es más obvio de notar (que no pertenece a $L$), es cuando se bombea
+        $a^i b^j$, pues el único caso que es aceptado por $L$ es cuando se bombea una solo vez, en otro caso tendriamos
+        algo como lo siguiente
+        \[
+        a^{3m - i} a^i b^j \dotsm a^i b^j b^{m - j} c^{3m} 
+        \]
+        o como lo siguiente
+       \[
+        a^{3m - i} b^{m - j} c^{3m} 
+        \]
+        y como $|a^{3m - i}| < |c^{3m}|$ (o por el caso $1$), deducimos que no pertenece a $L$.
+      \item Un último caso a analizar (y que también es fácil de ver, el porque no pertenece a $L$)
+        es cuando se bombea $a^i b^m c^j$, pues se tendría que cuando se bombea una cantidad de
+        veces distinta de $1$ se tiene que
+        \begin{eqnarray*}
+          a^{3m - i} a^i b^m c^j \dotsm  a^i b^m c^j  c^{3m - j}.
+        \end{eqnarray*}
+      \end{itemize}
+      Después del análisis anterior, podemos concluir que $L \notin$ CFL.
+    \end{proof}
 \end{enumerate}
 \end{document}
