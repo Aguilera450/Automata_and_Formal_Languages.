@@ -90,6 +90,210 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{\LARGE{Tarea 3}}
 \begin{enumerate}
-\item Dados
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ejercicio 01
+\item Diseña una máquina de Turing que reconozca el lenguaje
+  \[
+  \{\alpha\alpha\alpha \big| \alpha \in \in\{a, b\}^*\}
+  \]
+  A continuación se diseña una máquina de Turing que cumple los
+  requerimientos:
+  \begin{center}
+    \begin{tikzpicture}[estado/.style={circle,draw=black},auto,/tikz/initial text={},
+        final/.style={circle,draw=black,double},thick]
+      \node [estado,initial, final] (s) [left=100pt]   {$s$};
+      \node [estado,final]          (t) [right=100pt]  {$t$};
+      \path[->]
+      (s) edge [curve to, out=0,in=180,relative]  node {$\vdash(_,_,\rightarrow)\big|(_,_,\rightarrow)|(_,_,\rightarrow)\dashv$} (t)
+      (s)  edge [loop below]                      node {$\vdash(a,a,\rightarrow)\big|(a,a,\rightarrow)|(a,a,\rightarrow)\dashv$\;\;
+                                                        $\vdash(a,a,\rightarrow)\big|(a,a,\rightarrow)|(a,a,\rightarrow)\dashv$} (s);
+    \end{tikzpicture}
+  \end{center}
+      de esta manera se acepta la división de la cadena original en tres cadenas y la máquina de Turing verifica que estos segmentos
+    sean los mismos. \hfill $\square$
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ejercicio 02
+\item Demuestra (sin utilizar el teorema de Rice) que el conjunto
+  \[
+  REG = \{\langle M \rangle \big| L(M) \text{ es regular}\}
+  \]
+  no es recursivamente enumerable y tampoco lo es su complemento.
+  \textbf{Sugerencia:} $\emptyset$ y $\Sigma^*$ son regulares.
+\end{enumerate}
+  
+\textbf{\textit{Desmotración:}} Analicemos 2 posibles casos:
+
+1. [$REG$ no es r.e.] Para este caso realicemos la reducción 
+\[
+\thicksim HP \leq_{m} REG
+\]
+como consecuencia de lo anterior se tiene que existe una función computable
+$\sigma$, tal que si
+\[
+\langle M \rangle \# \langle \alpha \rangle \in\; \thicksim HP
+\Leftrightarrow \sigma\left(\langle M \rangle \# \langle \alpha \rangle\right) \in REG
+\]
+entonces, definimos a $\sigma$ como
+%------------------- Algoritmo para la función computable, 1era reducción.
+
+\begin{algorithm}[H]
+  \SetAlgorithmName{}{}%función computable}{}
+  \DontPrintSemicolon
+  \SetKwData{False}{false}\SetKwData{True}{true}
+  \SetKwFunction{New}{new}\SetKwFunction{End}{end}\SetKwFunction{Used}{used}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+
+  \KwIn{$M \in TM$ y $\alpha \in \Sigma^*$.}
+  \KwOut{Una $M' \in TM$ que simula a $M$.}
+  \BlankLine {
+    Sea $M'(\beta)$: simulación de $M(\alpha)$\;
+    \If{$\beta = 0^n1^n$}{
+      termina y acepta\;
+    }
+    termina y rechaza\;
+  }
+             {\Return $M'$\;}
+             \caption{$\sigma(M, \alpha)$ computable} \label{sigma}%\textnormal{new}
+             \DecMargin{1em}
+\end{algorithm}
+
+ahora, analicemos dos posibles casos:
+\begin{itemize}
+\item[$\Rightarrow$)] En este caso, si $M$ no se detiene con la cadena $\alpha$, tenemos entonces
+  \begin{eqnarray*}
+  \langle M \rangle \# \langle \alpha \rangle \in\; \thicksim HP
+  &\Rightarrow& M' \text{ solo puede recibir a la cadena } \alpha = \emptyset.\\
+  &\Rightarrow& L(M') = \emptyset \in REG.
+  \end{eqnarray*}
+  de lo anterior se cumple la ida de la demostración.
+\item[$\Leftarrow$)] En este caso particular, procedamos por contrapositiva, esto es
+  \begin{eqnarray*}
+    \langle M \rangle \# \langle \alpha \rangle \notin\; \thicksim HP
+    &\Rightarrow& M \text{ se detiene con } \alpha.\\
+    &\Rightarrow& \text{por } \sigma \text{ y la línea 2 del algoritmo, } \beta = 0^n1^n.\\
+    &\Rightarrow& L(M') = \{0^n1^n\} \notin REG.
+  \end{eqnarray*}
+  la última implicación se sigue del \textbf{Lema del Bombeo} [demostración hecha en clase].
+  Como tomamos la contrapositiva, esto es equivalente a
+  \[ \sigma\left(\langle M \rangle \# \langle \alpha \rangle\right) \in REG
+  \Rightarrow \langle M \rangle \# \langle \alpha \rangle \in\; \thicksim HP.\]
+\end{itemize}
+del análisis anterior podemos concluir que 
+\[
+\thicksim HP \leq_{m} REG
+\]
+son reducibles. Como $\thicksim HP$ no es semidecidible, y esto a su vez implica que
+no es recursivamente enumerable. Entonces $REG$ no es recursivamente enumerable.
+
+2. [$\thicksim REG$ no es r.e.] Para este caso realicemos la reducción
+\[
+\thicksim HP \leq_{m}\; \thicksim REG
+\]
+de esto se sigue que, existe una función computable $\delta$ tal que
+\[
+\langle M \rangle \# \langle \alpha \rangle \in\; \thicksim HP
+\Leftrightarrow \delta\left(\langle M \rangle \# \langle \alpha \rangle\right) \in\; \thicksim REG
+\]
+entonces, definimos $\delta$ tal que
+%------------------- Algoritmo para la función computable, 2da reducción.
+
+\begin{algorithm}[H]
+  \SetAlgorithmName{}{}%función computable}{}
+  \DontPrintSemicolon
+  \SetKwData{False}{false}\SetKwData{True}{true}
+  \SetKwFunction{New}{new}\SetKwFunction{End}{end}\SetKwFunction{Used}{used}
+  \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+
+  \KwIn{$M \in TM$ y $\alpha \in \Sigma^*$.}
+  \KwOut{Una $M' \in TM$ que simula a $M$.}
+  \BlankLine {
+    Sea $M'(\beta)$\;
+    \If{$\beta = 0^n1^n$}{
+      termina y acepta\;
+    }
+    simulación de $M(\alpha)$\;
+    termina y rechaza\;
+  }
+             {\Return $M'$\;}
+             \caption{$\delta(M, \alpha)$ computable} \label{sigma}%\textnormal{new}
+             \DecMargin{1em}
+\end{algorithm}
+ahora, analicemos dos posibles casos:
+\begin{itemize}
+\item[$\Rightarrow$)] En este caso, si $M$ no se detiene con la cadena $\alpha$, tenemos entonces
+  \begin{eqnarray*}
+    \langle M \rangle \# \langle \alpha \rangle \in\; \thicksim HP
+    &\Rightarrow& \beta = 0^n1^n.\\
+    &\Rightarrow& L(M') = \{0^n1^n\} \notin REG\\
+    &\Rightarrow& L(M') \in\; \thicksim REG.
+  \end{eqnarray*}
+  la penúltima implicación se sigue del \textbf{Lema del Bombeo} [demostración hecha en clase].
+\item[$\Leftarrow$)] En este caso particular, procedamos por contrapositiva, esto es
+  \begin{eqnarray*}
+    \langle M \rangle \# \langle \alpha \rangle \in\;  HP
+    &\Rightarrow& M \text{ se detiene con } \alpha.\\
+    &\Rightarrow& \text{por } \sigma \text{ y las líneas 5 y 6 del algoritmo aceptan } \Sigma^*.\\
+    &\Rightarrow& L(M') \in REG.
+  \end{eqnarray*}
+  Como tomamos la contrapositiva, esto es equivalente a
+  \[ \sigma\left(\langle M \rangle \# \langle \alpha \rangle\right) \in \thicksim REG
+  \Rightarrow \langle M \rangle \# \langle \alpha \rangle \in\; \thicksim HP.\]
+\end{itemize}
+del análisis anterior podemos concluir que 
+\[
+\thicksim HP \leq_{m} \thicksim REG
+\]
+son reducibles. Como $\thicksim HP$ no es semidecidible, y esto a su vez implica que
+no es recursivamente enumerable. Entonces $\thicksim REG$ no es recursivamente enumerable.
+\hfill $\square$
+
+\begin{enumerate}
+\item[3.] Demuestra ahora que REG no es ni siquiera recursivamente enumerable
+  por medio de uno de los teoremas de Rice.
+  \begin{proof} Por el $2^{\text{do}}$ teorema de Rice tenemos que para una
+    propiedad no trivial de lenguajes recursivamente enumerables NO monótona, la propiedad
+    no es siquiera semidecidible.
+
+    Recordemos que, con refrente a la clasificación de propiedades monótonas,
+    la propiedad de ser regular no es monótona. De lo anterior y por el $2^{\text{do}}$
+    teorema de Rice, se sigue que REG no es siquiera semidecidible.
+
+    Sabemos que una propiedad es semidecidible si y sólo si es recursivamente enumerable.
+    Como REG no es siquiera semidecidible, concluimos por transatividad que
+    
+    \[ \therefore\;\; REG \text{ no es siquiera recursivamente enumerable.}\]
+  \end{proof}
+\item[4.] Demuestra que los lenguajes decidibles son cerrados bajo unión y
+  concatenación.
+  \begin{proof}
+    Para este ejercicio, analicemos dos posibles casos:
+    \newcommand{\localtextbulletone}{\textcolor{black}{\raisebox{.45ex}{\rule{.6ex}{.6ex}}}}
+    \renewcommand{\labelitemi}{\localtextbulletone}
+    \begin{itemize}
+    \item Cerradura bajo unión:
+      
+      Sean dos lenguajes cualesquiera $L, L'$ decidibles, y $M, M'$ máquinas de Turing totales
+      tales que
+      \[L(M) = L \hspace*{0.2cm}\text{ y }\hspace*{0.2cm} L(M') = L'\]
+      tomemos un elemento en
+      \[x \in L \cup L'\]
+      y observemos que $x \in L$ o $x \in L'$, si $x \in L$ entonces esta en un lenguaje decidible y
+      por tanto $x$ es decidible. Si $x \in L'$, entonces esta en un lenguaje decidible y nuevamente
+      $x$ es decidible.
+      \[\therefore\;\; \{\text{Lenguajes decidibles}\} \text{ son cerrados bajo unión.} \]
+    \item Sean dos lenguajes cualesquiera $L, L'$ decidibles, y $M, M'$ máquinas de Turing totales
+      tales que
+      \[L(M) = L \hspace*{0.2cm}\text{ y }\hspace*{0.2cm} L(M') = L'\]
+      tomemos
+      \[x \in L \hspace*{0.2cm}\text{ y }\hspace*{0.2cm} x' \in L'\]
+      y notemos que $xx' \in LL'$, pero $xx'$ es una cadena aceptada por
+      $N \in TM$ tal que $N$ es de dos cintas donde una de las cintas es
+      la simulación de $M$ y otra cinta es $M'$, entonces basta con recorrer
+      y aceptar $x$ con la primer cinta, caso análogo con $x'$ pero con la
+      segunda cinta. Luego, $N(xx')$, como $N$ corresponde a dos cintas que
+      previamente sabiamos que generaban un lenguaje decidible, entonces
+      podemos concluir que $xx'$ son parte de un lenguaje decidible y como
+      \[xx' \in LL'\]
+      entonces, $LL'$ es decidible.
+    \end{itemize}
+  \end{proof}
 \end{enumerate}
 \end{document}
