@@ -13,6 +13,13 @@
 %% Identación
 \setlength{\parindent}{0cm}
 
+% Comentario en bloques:
+\iffalse
+\fi
+
+% Hipervínculos:
+\usepackage{hyperref}
+
 % Código
 \newcommand{\code}[1]{\textcolor{white!25!black}{\texttt{#1}}}
 \usepackage{listings}
@@ -91,13 +98,218 @@
 \section*{\LARGE{Tarea 4}}
 Considera la exponenciación:
 \begin{eqnarray*}
-  n^{0} &=& 1\\
-  n^{m + 1} &=& n^m \times n
+  \mathrm{n^{0}} &=& \mathrm{1}\\
+  \mathrm{n^{m + 1}} &=& \mathrm{n^m \times n}
 \end{eqnarray*}
 \begin{enumerate}
+  %%%~~~~~~~~~~~~~~~~~~~~~~~~~ Problema 01:
 \item Transfórmala en una afirmación recursiva $\mu$.
   \begin{proof}
+    Antes de definir la función recursiva-$\mu$ requerida, definamos
+    una función recursiva-$\mu$ que defina a la siguiente función
+    \begin{eqnarray*}
+      \mathrm{h(0)} &=& \mathrm{s(0)}\\
+      \mathrm{h(s(n))} &=& \mathrm{h(n)}
+    \end{eqnarray*}
+    como la función recursiva-$\mu$
+    \begin{eqnarray*}
+      \mathrm{h:}\; \mathbb{N} \rightarrow \mathbb{N} &&\\
+      \mathrm{h(\text{cero}())} &=& \mathrm{s \circ cero()}\\
+      \mathrm{h(s(n))} &=& \mathrm{\prod_{2}^{2}(n, h(n))}.
+    \end{eqnarray*}
+    Después de la definición anterior, encontremos una función recursiva-$\mu$
+    que cumpla con lo requerido\footnote{Para esto haremos uso de la función
+    \code{sum} y \code{mult} vistas en clase.}, esta es
+    \begin{center}
+      \fbox{
+        \begin{minipage}[b][1\height]%
+          [t]{0.867\textwidth}
+          \textbf{Obs.} la función $\mathrm{g}: \mathbb{N}^3 \rightarrow \mathbb{N}$, se define por
+          \[\mathrm{g} = \mathrm{mult \circ \left(\prod_{1}^{3}, \prod_{3}^{3}\right)}\]
+          que no resulta tan relevante hacerla explicita en la definición de $\mathrm{expt}$.
+      \end{minipage}}
+    \end{center}      
+    \begin{eqnarray*}
+      \mathrm{expt:}\; \mathbb{N}^2 \rightarrow \mathbb{N} &&\\
+      \mathrm{expt(n, 0)} &=& \mathrm{h(m)}\\
+      \mathrm{expt(n, s(m))} &=& \mathrm{\left(mult \circ \left(\prod_{1}^{3}, \prod_{3}^{3}\right)\right)(n, m, expt(n, m))}.
+    \end{eqnarray*}
+  \end{proof}
+    %%%~~~~~~~~~~~~~~~~~~~~~~~~~ Problema 02:
+\item A partir de la respuesta a 1, escríbela de acuerdo con las convenciones
+  para el cálculo $\Lambda$.
+  \begin{proof}
+    Para definir una función-$\lambda$ que transcriba el funcionamiento de la función recursiva-$\mu$ presentada
+    con anterioridad necesitamos definir al numeral $1$, esto es
+    \begin{eqnarray*}
+      \overline{1} &\equiv_{def}& \left[F, \overline{0}\right].
+    \end{eqnarray*}
+    Ahora, definimos la función-$\lambda$ requerida\footnote{Tomando en cuenta las funciones-$\lambda$ $\mathrm{*, P, Cero}$,
+    y $\mathrm{Y}$ vistas en clase.}, esto es
+    \begin{eqnarray*}
+      \mathrm{expt} &\equiv_{def}& \mathrm{Y\left(\lambda_{f}.\lambda_{nm}(Cero\; m)\;\overline{1}\;(*\; (P\; m)\; n\; (f((P\; m)\; n)))\right)}.
+    \end{eqnarray*}
+    debe quedar claro que los terminos $n, m$ son la base y el exponente respectivamente.
+  \end{proof}
+  %%%~~~~~~~~~~~~~~~~~~~~~~~~~ Problema 03:
+\item A partir de la respuesta a 1, impleméntala por medio de un programa
+  de IMP.
+  \newline
+  \newline
+  \textbf{\textit{Solución:}} Para esta problema, demos las siguientes definiciones recursivas en IMP\footnote{Bajo el supuesto de que $*$ := MULT $\in$ IMP.}
+  \begin{eqnarray*}
+    \mathrm{HEXPT} &=& \mathrm{X}\; :=\; 1\\
+    \mathrm{GEXPT} &=& \mathrm{X\; :=\; X * Z}
+  \end{eqnarray*}
+  a partir de lo anterior definimos\footnote{Y suponiendo $+$ := SUMA $\in$ IMP.}
+  
+  \begin{algorithm}[H]
+    \SetAlgorithmName{}{}%función computable}{}
+    \DontPrintSemicolon
+    \SetKwData{False}{false}\SetKwData{True}{true}
+    \SetKwFunction{New}{new}\SetKwFunction{End}{end}\SetKwFunction{Used}{used}
+    \SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
 
-    \end{proof}
+    \KwIn{$\mathrm{N, M}$ como respectivos en base y potencia.}
+    \KwOut{$\mathrm{N^M}$.}
+    \BlankLine {
+      Y := 0\;
+      Z := N\;
+      W := M\;
+      HEXPT\;
+      \While{\textnormal{Y $<$ W}}{
+        GEXPT\;
+        N := Z\;
+        Y := Y + 1\;
+      }
+    }
+               {}
+               \caption{EXPT} \label{sigma}%\textnormal{new}
+               \DecMargin{1em}
+  \end{algorithm}
+  \subsubsection*{Comentarios por línea}
+  1. Está línea indica nuestro contador.
+  \newline
+  2. Aquí recibimos la base de la potencia.
+  \newline
+  3. Recibimos el exponente de la potencia.
+  \newline
+  4. Llammamos lo equivalente a nuestro caso base (notar que no se
+  esta haciendo de manera recursiva).
+  \newline
+  5. Verificamos la condición del \code{while}.
+  \newline
+  6. Llamamos a la función auxiliar que realiza la multiplicación de terminos.
+  \newline
+  7. Como los comandos resultan ser destructivos, recuperamos el valos de N
+  (se hace la presición de el por qué no se recupera el valor de M. Pues no
+  se utiliza en algún comando destructivo).
+  \newline
+  8. Se aumenta el contador en 1.
+  \newline
+  9. Termina el ciclo (esto pasa cuando la condición de validación en 5
+  ya no funciona, devuelve F).
+  \hfill $\square$
+\item Define la semántica del comando
+  \begin{center}
+    \code{for\; i\; :=\; 1\ to\ n\ do\ P}
+  \end{center}
+  y utilízalo para definir la recursión primitiva de una manera más directa.
+  \newline
+  \newline
+  \textbf{\textit{Solución:}}
+  Para este ejercicio supondremos la regla semántica que define al orden
+  ``$<$''\footnote{En general supondremos todas las definiciones dadas en clase,
+  pero especificaremos como llamarle para hacerlas más compactas.}, así podemos definir
+  \begin{center}                                                             
+    \begin{array}{rl}
+      &\langle \mathrm{i := 1}, \sigma \rangle \rightarrow \sigma'
+      \hspace*{1.8cm} \langle \mathrm{i < n}, \sigma' \rangle \rightarrow F&
+      \hline
+      &\hspace*{0.4cm} \langle \text{\code{for\; i\; :=\; 1\ to\ n\ do\ P}}, \sigma \rangle
+      \rightarrow \sigma&
+    \end{array}
+  \end{center}
+  Nótese que el \code{for} se definió bajo el orden ``$<$'', sin embargo se puede construir
+  una versión que admita el orden ``$\leq$'' de la siguiente manera
+  \begin{center}                                                             
+    \begin{array}{rl}
+      &\langle \mathrm{i := 1}, \sigma \rangle \rightarrow \sigma'
+      \hspace*{0.5cm} \langle \mathrm{i < n}\; \lor\; \mathrm{i = n},
+      \sigma' \rangle \rightarrow F&
+      \hline
+      &\hspace*{0.4cm} \langle \text{\code{for\; i\; :=\; 1\ to\ n\ do\ P}}, \sigma \rangle
+      \rightarrow \sigma&
+    \end{array}
+  \end{center}
+  Para este ejercicio particular tomaré la primer definición y se debe observar que es
+  el equivalente a ``\code{h}'' en nuestras funciones recursivas-$\mu$. Basados en esta
+  definición, definimos
+  \begin{center}                                                             
+    \begin{array}{rl}
+      &\langle \mathrm{i := 1}, \sigma \rangle \rightarrow \sigma'' \hspace*{0.5cm}
+      \langle \mathrm{i < n}, \sigma'' \rangle \rightarrow V
+      \hspace*{0.5cm} \langle P, \sigma'' \rangle \rightarrow \sigma'''
+      \hspace*{0.5cm} \langle \text{\code{for\; i\; :=\; 1\ to\ n\ do\ P}},
+      \sigma''' \rangle \rightarrow \sigma'&
+      \hline
+      &\hspace*{4cm} \langle \text{\code{for\; i\; :=\; 1\ to\ n\ do\ P}},
+      \sigma \rangle \rightarrow \sigma'_{[i := i + 1]}&
+    \end{array}
+  \end{center}
+  Ahora que tenemos la semántica del comando \code{for}, podemos definir la recursión
+  primitiva basada en este comando.
+  \begin{center}
+    \fbox{
+      \begin{minipage}[b][1\height]%
+        [t]{0.867\textwidth}
+        \textbf{Obs.}
+        Para la definición de recursión primitiva se supone que existen $P_h$ y $P_g$, pues
+        sabemos que existen las funciones $h$ y $g$ como funciones recursivas-$\mu$ y
+        por la demostración de la equivalencia entre funciones recursivas-$\mu$ y SOE,
+        podemos concluir que sus homólogos [$P_h$ y $P_g$] en SOE existen.
+    \end{minipage}}
+  \end{center}
+  de la lámina\footnote{Otros modelos computacionales.} 30/32 tenemos que
+  \begin{eqnarray*}
+    \mathrm{\sigma'(X_0)} &=& \mathrm{h(\sigma(X))}
+    \hspace*{3cm} \text{donde } \langle P_h, \sigma \rangle \rightarrow \sigma'\\
+    \mathrm{\sigma'(X_0)} &=& \mathrm{g(\sigma(Z), \sigma(X), \sigma(X'))}
+    \hspace*{1.15cm} \text{donde } \langle P_g, \sigma \rangle \rightarrow \sigma'
+  \end{eqnarray*}
+  así, definimos el siguiente programa
 \end{enumerate}
+\begin{algorithm}[H]
+  \SetAlgorithmName{}{}%función computable}{}
+  \DontPrintSemicolon
+  \SetKwData{False}{false}\SetKwData{True}{true}
+  \SetKwFunction{New}{new}\SetKwFunction{End}{end}\SetKwFunction{Used}{used}
+  %\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+
+  %\KwIn{$\mathrm{N, M}$ como respectivos en base y potencia.}
+  %\KwOut{$\mathrm{N^M}$.}
+  \BlankLine {
+    W := Z\;
+    Y := X\;
+    $\mathrm{P_h}$\;
+    \For{\textnormal{i := 1 \textbf{to}} $\mathrm{W}$}{
+      Z := i - 1\;
+      X := Y\;
+      $\mathrm{X'}$ := $\mathrm{X_0}$\;
+      $\mathrm{P_g}$\;
+    }
+  }
+             {}
+             \caption{Recursión Primitiva.} \label{sigma}%\textnormal{new}
+             \DecMargin{1em}
+\end{algorithm}
+Obsérvese que este programa recorre a $\mathrm{i \in \{1, \dotsm, W - 1\}}$, y $\mathrm{Z}$ va tomando valores desde
+\[\mathrm{0 \leq Z \leq W - 2}\]
+es por esto que se debe aceptar un valor para Z (que eventualmente se guardará en W) del valor requerido
+más uno, esto es, si se quisiera Z. Entonces llamamos al programa con $\mathrm{Z + 1}$, \textit{i.e.},
+\[\mathrm{W := Z + 1}\]
+será el tope. Así, habrá Z\footnote{W después de la primera iteración, pues aquí se conserva el valor inicial de Z.}
+iteraciones\footnote{En el while de la lámina 30/32 justamente se itera de 0 a W - 1 veces, esto es W iteraciones.}.
+Caso análogo si utilizaramos la definición alternativa para el for [la que considera a la igualdad].
+\hfill $\square$
 \end{document}
